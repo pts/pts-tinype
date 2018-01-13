@@ -29,7 +29,9 @@ Related projects:
 
 * https://www.codejuggle.dj/creating-the-smallest-possible-windows-executable-using-assembly-language/
   is a related project from 2015, and its tiny .exe is even smaller: 268
-  bytes. Unfortunately it doesn't run on Windows XP. (It runs on Wine 1.6.2
+  bytes. Unfortunately it doesn't run on Windows XP (``The application
+  failed to initialize properly (0xc0000007b). Click on OK to terminate the
+  application.''. (It runs on Wine 1.6.2
   though, and its author claims that it runs on Windows 7 64-bit.) See
   box1.nasm and box1.golden.exe for a copy of the code there.
 * Crinkler (http://www.crinkler.net/), a combined linker and compressor to
