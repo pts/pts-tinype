@@ -62,4 +62,16 @@ Windows XP .exe loader limitations:
 * SizeOfHeaders must be > 0.
 * PointerToRawData is 0, then Windows XP doesn't load the section.
 
+How was hh2.nasm created?
+
+* The .nasm source in
+  https://www.codejuggle.dj/creating-the-smallest-possible-windows-executable-using-assembly-language/
+  was studied.
+* The .exe created from the hello-world .c program in
+  https://stackoverflow.com/questions/42022132/how-to-create-tiny-pe-win32-executables-using-mingw
+  was manually converted back to .nasm, pointers changed to symbols and
+  address computations added one-by-one.
+* The 2nd .nasm file was gradually changed to resemble the 1st .nasm file,
+  while making sure that the generated .exe still works on Windows XP.
+
 __END__
