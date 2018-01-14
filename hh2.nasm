@@ -1,5 +1,5 @@
 ;
-; hh2.nasm: 405-byte, 0-based tiny hello-world Win32 PE .exe
+; hh2.nasm: 402-byte, 0-based tiny hello-world Win32 PE .exe
 ; by pts@fazekas.hu at Sat Jan 13 11:53:58 CET 2018
 ;
 ; By 0-based we mean that Windows loads the entire .exe file to memory, even
@@ -26,7 +26,7 @@
 ; Output .exe file size in bytes (approximately):
 ;
 ;   len(text_bytes) + len(data_bytes) + len(rodata_bytes) +
-;   + 323
+;   + 320
 ;   + sum(len(name) for name in imported_names) + 2 * len(imported_names) - 1
 ;   + 8 * len(imported_names) + 6
 ;   + sum(len(name) for name in library_names) + len(library_names) - (len('kernel32') + 1) - ...
@@ -271,7 +271,7 @@ _iat:  ; Modified by the PE loader before jumping to _entry.
 __imp__ExitProcess@4:  dd (textbase - imagebase) + (IMAGE_IMPORT_BY_NAME_ExitProcess - _text)
 __imp__GetStdHandle@4: dd (textbase - imagebase) + (IMAGE_IMPORT_BY_NAME_GetStdHandle - _text)
 __imp__WriteFile@20:   dd (textbase - imagebase) + (IMAGE_IMPORT_BY_NAME_WriteFile - _text)
-dd 0  ; Marks end-of-list.
+dw 0  ; Marks end-of-list, 2nd half of the dd is the dw below.
 IMAGE_IMPORT_BY_NAME_ExitProcess:
 .Hint: dw 0
 .Name: db 'ExitProcess'  ; Terminated by the subsequent .Hint.

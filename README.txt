@@ -2,7 +2,7 @@ pts-tinype: tiny hello-world Win32 PE .exe
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 pts-tinype is a set of tiny hello-world Win32 PE .exe executables for the
 console (Command Prompt), with assembly source code. The smallest one,
-hh2.golden.exe is just 404 bytes large, and it runs on Windows XP ...
+hh2.golden.exe is just 402 bytes large, and it runs on Windows XP ...
 Windows 10.
 
 How to run:
@@ -20,7 +20,7 @@ How to run:
 Variants:
 
 * hh1.golden.exe (663 bytes): Should work on Windows XP ... Windows 10.
-* hh2.golden.exe (404 bytes): Should work on Windows XP ... Windows 10,
+* hh2.golden.exe (402 bytes): Should work on Windows XP ... Windows 10,
   contains some string constants overlapping header fields.
 * hh3.golden.exe (2048 bytes): Should work on Windows XP ... Windows 10.
   Built with MinGW GCC from a .c source, doesn't contain assembly or
