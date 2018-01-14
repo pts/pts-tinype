@@ -10,7 +10,7 @@
 ;
 ;   $ nasm -f bin -o hh2.exe hh2.nasm
 ;   $ chmod 755 hh2.exe  # For QEMU Samba server.
-;   $ ndisasm -b 32 -e 0x200 -o 0x403000 hh2.exe
+;   $ ndisasm -b 32 -e 0x114 -o 0x403000 hh2.exe
 ;
 ; hh2.asm was inspired by the 268-byte .exe on
 ; https://www.codejuggle.dj/creating-the-smallest-possible-windows-executable-using-assembly-language/

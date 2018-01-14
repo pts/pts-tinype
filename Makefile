@@ -1,7 +1,7 @@
 .PHONY: all clean
 
-# hh3.exe is not here.
-all: hh1.exe hh2.exe
+# hh3.exe is not here, it needs a cross-compiler to build.
+all: hh1.exe hh2.exe hh4.exe box1.exe
 
 hh1.exe: hh1.nasm
 	nasm -O0 -f bin -o $@ $<
@@ -20,4 +20,4 @@ box1.exe: box1.nasm
 	-chmod 755 $@
 
 clean:
-	rm -f hh1.exe hh2.exe hh3.exe box1.exe
+	rm -f hh1.exe hh2.exe hh3.exe hh4.exe box1.exe

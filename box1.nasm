@@ -3,7 +3,8 @@
 ;
 ; box1.exe works on Wine 1.6.2, but it doesn't work on Windows XP SP3 for
 ; the author of hh2.nasm. According to the author of box1.nasm, box1.exe
-; works on Windows 7 64-bit.
+; works on Windows 7 64-bit. The author of hh2.nasm has checked that
+; box1.exe works on Windows 7 32-bit.
 ;
 IMAGEBASE equ 400000h
 

@@ -17,6 +17,23 @@ How to run:
   QEMU:
   http://ptspts.blogspot.com/2017/09/how-to-run-windows-xp-on-linux-using-qemu-and-kvm.html
 
+Variants:
+
+* hh1.golden.exe (663 bytes): Should work on Windows XP ... Windows 10.
+* hh2.golden.exe (404 bytes): Should work on Windows XP ... Windows 10,
+  contains some string constants overlapping header fields.
+* hh3.golden.exe (2048 bytes): Should work on Windows XP ... Windows 10.
+  Built with MinGW GCC from a .c source, doesn't contain assembly or
+  linker tricks.
+* hh4.golden.exe (268 bytes): Doesn't work on Windows XP, works on Windows
+  7, should work on Windows Vista ... Windows 10,
+  contains some string constants overlapping header fields. On 32-bit
+  Windows 7 the first 256 bytes would have been enough.
+* box1.golden.exe (268 bytes): Doesn't work on Windows XP, works on Windows
+  7, should work on Windows Vista ... Windows 10,
+  contains some string constants overlapping header fields. On 32-bit
+  Windows 7 the first 261 bytes would have been enough.
+
 How to compile:
 
 * On a Unix system (e.g. Linux) with the `nasm' and `make' tools installed,
@@ -25,15 +42,15 @@ How to compile:
   hh1.nasm source files for compilation instructions. On Windows, you may
   have to run `nasmw' instead of `nasm'.
 
-Related projects:
+Related projects and docs:
 
 * https://www.codejuggle.dj/creating-the-smallest-possible-windows-executable-using-assembly-language/
   is a related project from 2015, and its tiny .exe is even smaller: 268
   bytes. Unfortunately it doesn't run on Windows XP (``The application
   failed to initialize properly (0xc0000007b). Click on OK to terminate the
-  application.''. (It runs on Wine 1.6.2
-  though, and its author claims that it runs on Windows 7 64-bit.) See
-  box1.nasm and box1.golden.exe for a copy of the code there.
+  application.''. It works on Wine 1.6.2, Windows 7 32-bit,
+  and its author claims that it runs on Windows 7 64-bit. See
+  box1.nasm and box1.golden.exe for a copy of the code.
 * The 268-byte PE .exe header pattern:
   http://pferrie.host22.com/misc/tiny/pehdr.htm
 * 268-byte amd64 tiny PE .exe where every byte is executed:
@@ -76,6 +93,8 @@ Windows XP .exe loader limitations:
 * A section cannot be loaded to ImageBase, minimum is ImageBase + 0x1000.
 * SizeOfHeaders must be > 0.
 * PointerToRawData is 0, then Windows XP doesn't load the section.
+* Maybe the limitations above don't apply if we don't need any external
+  libraries (not even kernel32.dll). This needs further investigation.
 
 How was hh2.nasm created?
 
