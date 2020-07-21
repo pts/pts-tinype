@@ -16,10 +16,12 @@
 ;
 ; The reason why it doesn't work on Windows XP and earlier is that these
 ; versions of Windows require a file alignment larger than 4 bytes, e.g. in
-; on Windows XP it's at least 512 bytes. (This hasn't been properly verified,
-; because changing both alignments of a working hh3w.exe to 4 will also make
-; them stop working on Wine, which does accept file alignment of 4. See also
-; hhwa4.exe, TODO(pts): Make it work on Wine.)
+; on Windows XP it's at least 512 bytes. (This has been verified: recompiling
+; hh3.c with -Wl,--section-alignment,16,--file-alignment,16 made it stop
+; working on Windows NT 3.51, Windows 95 and Windows XP, but it continued
+; working on Windows 7 and Wine. hh4.nasm never worked
+; on these systems for other header-related reasons.)
+; (TODO(pts): Make hhwa4.exe work on Wine, which has 4 as alignment.)
 ;
 ; The generated hh4.exe works on:
 ;
