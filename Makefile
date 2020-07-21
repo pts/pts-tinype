@@ -13,7 +13,10 @@ hh3.exe: hh3.c
 	i686-w64-mingw32-gcc -m32 -mconsole -s -Os -fno-ident -fno-stack-protector -fomit-frame-pointer -fno-unwind-tables -fno-asynchronous-unwind-tables -falign-functions=1  -mpreferred-stack-boundary=2 -falign-jumps=1 -falign-loops=1 -nostdlib -nodefaultlibs -nostartfiles -o $@ $< -lkernel32
 	-chmod 755 $@
 hh3t.exe: hh3.c
-	wine tcc -s -O2 -W -Wall -Wextra -nostdlib -o hh3t.exe hh3.c -lkernel32
+	wine tcc -s -O2 -W -Wall -Wextra -nostdlib -o $@ $< -lkernel32
+	-chmod 755 $@
+hh3w.exe: hh3.c startw.o
+	owcc -I"$(WATCOM)"/h/nt -fno-stack-check -bwin32 -march=i386 -Wl,runtime -Wl,console=3.10 -W -Wall -Wextra -s -Os -fnostdlib -o $@ $< startw.o
 	-chmod 755 $@
 hh4.exe: hh4.nasm
 	nasm -O0 -f bin -o $@ $<

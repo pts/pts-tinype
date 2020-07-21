@@ -2,10 +2,11 @@
 
 #include <windows.h>
 
-/* _start() works for MinGW,
- * mainCRTStartup() works for MinGW and TCC (#ifdef __TINYC__).
+/* _start() works with MinGW and TCC (#ifdef __TINYC__), and it also works with
+ * OpenWatcom V2 if startw.o is also linked.
+ * mainCRTStartup() works for MinGW, but not TCC or OpenWatcom V2.
  */
-void __cdecl _start() {
+void __cdecl _start(void) {
   DWORD bw;
   HANDLE hfile = GetStdHandle(STD_OUTPUT_HANDLE);
   WriteFile(hfile, "Hello, World!\r\n", 15, &bw, 0);
