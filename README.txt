@@ -101,6 +101,19 @@ Related projects and docs:
 * https://stackoverflow.com/questions/42022132/how-to-create-tiny-pe-win32-executables-using-mingw
   contains a C hello-world Win32 PE .exe, 2048 bytes.
 
+Windows NT 3.1 .exe loader limitations:
+
+* SectionAlignment must be 0x1000.
+* FileAlignment must be >= 0x200.
+* File size must be divisible by 0x200 (512).
+* SubsystemVersion must be 3.10.
+* hh3tf.golden.exe, 0x300 bytes, with 2 sections does work.
+* Is there a solution with 1 section only (.text and .data combined), or
+  maybe 2 sections (.data overlapping the first 0x200 byes and unused, and
+  .text containing everything)? If it works, then 0x400 (1024) bytes would be
+  the size of the smallest ultraportable (Windows NT 3.1--Windows 10) Win32
+  PE .exe.
+
 Windows XP .exe loader limitations:
 
 * SizeOfOptionalHeader must be >= 0x78.
