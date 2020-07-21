@@ -4,14 +4,14 @@ pts-tinype is a set of tiny hello-world Win32 PE .exe executables for the
 console (Command Prompt), with assembly source code. The smallest one,
 hh2.golden.exe is just 402 bytes large, and it runs on Windows XP ...
 Windows 10. The smallest one which runs on all Win32 systems (Windows NT 3.1
-to Windows 10), hh3tf.golden.exe, is 1536 bytes.
+to Windows 10), hh5.golden.exe, is 1536 bytes.
 
 How to run:
 
 * Download and run hh2.golden.exe in the Command Prompt of any 32-bit (i386)
   or 64-bit (amd64, x86_64) Windows system or Wine. (It has been tested and
   it works on Windows XP, Windows 10 and Wine 1.6.2.)
-* Alternatively, download and run hh3tf.golden.exe on Windows NT 3.1, Windows
+* Alternatively, download and run hh5.golden.exe on Windows NT 3.1, Windows
   95, ..., Windows XP, ..., Windows 10 and Wine. It should work everywhere.
 * Alternatively, if you don't have a Windows system to try it on, run it
   with Wine.
@@ -49,6 +49,10 @@ Variants:
   Windows XP, works on Windows 7, should work on Windows Vista ... Windows 10,
   contains some string constants overlapping header fields. On 32-bit
   Windows 7 the first 256 bytes would have been enough.
+* hh5.golden.exe (1024 bytes): Like hh3tf.exe, but smaller, because the
+  .data section was merged to the .text section. It works on
+  Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows
+  95, Windows XP and Wine 5.0
 * box1.golden.exe (268 bytes): Doesn't work on Windows XP, works on Windows
   7, should work on Windows Vista ... Windows 10,
   contains some string constants overlapping header fields. On 32-bit
