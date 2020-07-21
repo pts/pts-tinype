@@ -2,7 +2,10 @@
 
 #include <windows.h>
 
-void __cdecl mainCRTStartup() {
+/* _start() works for MinGW,
+ * mainCRTStartup() works for MinGW and TCC (#ifdef __TINYC__).
+ */
+void __cdecl _start() {
   DWORD bw;
   HANDLE hfile = GetStdHandle(STD_OUTPUT_HANDLE);
   WriteFile(hfile, "Hello, World!\r\n", 15, &bw, 0);
