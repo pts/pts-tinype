@@ -3,13 +3,16 @@ pts-tinype: tiny hello-world Win32 PE .exe
 pts-tinype is a set of tiny hello-world Win32 PE .exe executables for the
 console (Command Prompt), with assembly source code. The smallest one,
 hh2.golden.exe is just 402 bytes large, and it runs on Windows XP ...
-Windows 10.
+Windows 10. The smallest one which runs on all Win32 systems (Windows NT 3.1
+to Windows 10), hh3tf.golden.exe, is 1536 bytes.
 
 How to run:
 
 * Download and run hh2.golden.exe in the Command Prompt of any 32-bit (i386)
   or 64-bit (amd64, x86_64) Windows system or Wine. (It has been tested and
   it works on Windows XP, Windows 10 and Wine 1.6.2.)
+* Alternatively, download and run hh3tf.golden.exe on Windows NT 3.1, Windows
+  95, ..., Windows XP, ..., Windows 10 and Wine. It should work everywhere.
 * Alternatively, if you don't have a Windows system to try it on, run it
   with Wine.
 * Alternatively, if you don't have a Windows system to try it on, run it on
@@ -24,7 +27,22 @@ Variants:
   contains some string constants overlapping header fields.
 * hh3.golden.exe (2048 bytes): Should work on Windows XP ... Windows 10.
   Built with MinGW GCC from a .c source, doesn't contain assembly or
-  linker tricks.
+  linker tricks. Also works on Windows 95, and if the SubsystemVersion field
+  in the PE header is changed from 4.0 to 3.10, it also works
+  on Windows NT 3.1.
+* hh3t.golden.exe (1536 bytes): Should work on Windows XP ... Windows 10.
+  Built with TCC 0.9.26 from a .c source, doesn't contain assembly or
+  linker tricks. Also works on Windows 95, and if the SubsystemVersion field
+  in the PE header is changed from 4.0 to 3.10, it also works
+  on Windows NT 3.1.
+* hh3tf.golden.exe (1536 bytes): Like hh3t.exe, but the SubsystemVersion field
+  in the PE header was changed from 4.0 to 3.10, to make it also work
+  on Windows NT 3.1.
+* hh3w.golden.exe (3072 bytes): Should work on Windows XP ... Windows 10.
+  Built with OpenWatcom V2 owcc from a .c source, doesn't contain assembly or
+  linker tricks. Also works on Windows 95, and if the SubsystemVersion field
+  in the PE header is changed from 4.0 to 3.10, it also works
+  on Windows NT 3.1.
 * hh4.golden.exe (268 bytes): Doesn't work on Windows XP, works on Windows
   7, should work on Windows Vista ... Windows 10,
   contains some string constants overlapping header fields. On 32-bit
