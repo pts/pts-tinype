@@ -43,8 +43,8 @@ Variants:
   linker tricks. Also works on Windows 95, and if the SubsystemVersion field
   in the PE header is changed from 4.0 to 3.10, it also works
   on Windows NT 3.1.
-* hh4.golden.exe (268 bytes): Doesn't work on Windows XP, works on Windows
-  7, should work on Windows Vista ... Windows 10,
+* hh4.golden.exe (268 bytes): Doesn't work on Windows NT 3.1, Windows 95,
+  Windows XP, works on Windows 7, should work on Windows Vista ... Windows 10,
   contains some string constants overlapping header fields. On 32-bit
   Windows 7 the first 256 bytes would have been enough.
 * box1.golden.exe (268 bytes): Doesn't work on Windows XP, works on Windows

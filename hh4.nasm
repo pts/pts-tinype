@@ -11,8 +11,15 @@
 ; hh4.asm was inspired by the 268-byte .exe on
 ; https://www.codejuggle.dj/creating-the-smallest-possible-windows-executable-using-assembly-language/
 ; . The fundamental difference is that hh4.exe works on Windows XP ... Windows
-; 10, while the program above doesn't work on Windows XP (but works on
-; Windows 7).
+; 10, while the program above doesn't work on Windows NT 3.1, Windows, 95 and
+; Windows XP (but works on Windows 7).
+;
+; The reason why it doesn't work on Windows XP and earlier is that these
+; versions of Windows require a file alignment larger than 4 bytes, e.g. in
+; on Windows XP it's at least 512 bytes. (This hasn't been properly verified,
+; because changing both alignments of a working hh3w.exe to 4 will also make
+; them stop working on Wine, which does accept file alignment of 4. See also
+; hhwa4.exe, TODO(pts): Make it work on Wine.)
 ;
 ; The generated hh4.exe works on:
 ;
