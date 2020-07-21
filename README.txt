@@ -25,6 +25,8 @@ Variants:
 * hh1.golden.exe (663 bytes): Should work on Windows XP ... Windows 10.
 * hh2.golden.exe (402 bytes): Should work on Windows XP ... Windows 10,
   contains some string constants overlapping header fields.
+  It doesn't work on Windows NT 3.51 (not even after changing the
+  SubsystemVersion to 3.10), and it doesn't work on Windows 95 either.
 * hh3.golden.exe (2048 bytes): Should work on Windows XP ... Windows 10.
   Built with MinGW GCC from a .c source, doesn't contain assembly or
   linker tricks. Also works on Windows 95, and if the SubsystemVersion field
@@ -37,7 +39,8 @@ Variants:
   on Windows NT 3.1.
 * hh3tf.golden.exe (1536 bytes): Like hh3t.exe, but the SubsystemVersion field
   in the PE header was changed from 4.0 to 3.10, to make it also work
-  on Windows NT 3.1.
+  on Windows NT 3.1. Does it work on Windows XP? (It may not, because
+  Windows XP may require at least 3 sections, and this one only has 2.)
 * hh3w.golden.exe (3072 bytes): Should work on Windows XP ... Windows 10.
   Built with OpenWatcom V2 owcc from a .c source, doesn't contain assembly or
   linker tricks. Also works on Windows 95, and if the SubsystemVersion field

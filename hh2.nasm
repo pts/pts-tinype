@@ -23,6 +23,9 @@
 ; * Windows XP SP3, 32-bit: Microsoft Windows XP [Version 5.1.2600]
 ; * Windows 10 64-bit: Microsoft Windows [Version 10.0.16299.192]
 ;
+; It doesn't work on Windows NT 3.51 (not even after changing the
+; SubsystemVersion to 3.10), and it doesn't work on Windows 95 either.
+;
 ; Output .exe file size in bytes (approximately):
 ;
 ;   len(text_bytes) + len(data_bytes) + len(rodata_bytes) +
