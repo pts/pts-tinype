@@ -227,7 +227,10 @@ _headers_end:
 %fatal Multiples of IMAGE_SECTION_HEADER needed.
 %endif
 %if (_headers_end - _sechead) / 40 < 3
-%fatal Windows XP needs at least 3 sections.
+; Please note that hh3t.golden.exe has only 2 sections, and it still works
+; on Windows XP (Tiny Windows XP in QEMU 4.2.0). So it's unclear why this
+; doesn't work with only 2 sections.
+%fatal Windows XP in this setting needs at least 3 sections.
 %endif
 
 ;times 0x200 - ($-$$) db 'x'

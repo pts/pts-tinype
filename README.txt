@@ -39,8 +39,7 @@ Variants:
   on Windows NT 3.1.
 * hh3tf.golden.exe (1536 bytes): Like hh3t.exe, but the SubsystemVersion field
   in the PE header was changed from 4.0 to 3.10, to make it also work
-  on Windows NT 3.1. Does it work on Windows XP? (It may not, because
-  Windows XP may require at least 3 sections, and this one only has 2.)
+  on Windows NT 3.1. It also works on Windowx XP.
 * hh3w.golden.exe (3072 bytes): Should work on Windows XP ... Windows 10.
   Built with OpenWatcom V2 owcc from a .c source, doesn't contain assembly or
   linker tricks. Also works on Windows 95, and if the SubsystemVersion field
@@ -105,7 +104,8 @@ Related projects and docs:
 Windows XP .exe loader limitations:
 
 * SizeOfOptionalHeader must be >= 0x78.
-* NumberOfSections must be >= 3.
+* NumberOfSections must be >= 3. (This isn't always the case, hh3tf.exe with
+  only 2 sections does work.)
   2 or 1 don't work, 4 works.
 * SectionAlignment must be 0x1000.
   Even 0x2000 doesn't work.
