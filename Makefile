@@ -27,6 +27,9 @@ hh4.exe: hh4.nasm
 hh5.exe: hh5.nasm
 	nasm -O0 -f bin -o $@ $<
 	-chmod 755 $@
+hh6.exe: hh6.nasm
+	nasm -O0 -f bin -o $@ $<
+	-chmod 755 $@
 box1.exe: box1.nasm
 	nasm -Ox -f bin -o $@ $<
 	-chmod 755 $@
