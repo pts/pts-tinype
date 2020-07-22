@@ -64,8 +64,10 @@ cpu 386
 
 ; The user can %define these to override the defaults.
 ; !! Do macro expansion on IMAGE_BASE now, and save the result.
-%ifndef IMAGE_BASE
-IMAGE_BASE equ 0x00400000  ; Variable.
+%ifdef IMAGE_BASE
+__IMAGE_BASE__ equ IMAGE_BASE
+%else
+__IMAGE_BASE__ equ 0x00400000  ; Variable.
 %endif
 %ifndef AFTER_LAST_SECTION_ALIGNMENT
 AFTER_LAST_SECTION_ALIGNMENT equ 1  ; Set it to 512 to get an 1024-byte .exe.
@@ -86,9 +88,9 @@ VADDR_TEXT equ (0x120+(STUB_SIZE)+4095)&~4095  ; 0x1000 by default.
 %error 'VADDR_TEXT too small, must be at least 0x120+STUB_SIZE'
 %endif
 
-section header align=1 valign=1
+section header align=1 valign=1 vstart=__IMAGE_BASE__
 _HEADER:
-section text   align=1 valign=1 follows=header vstart=IMAGE_BASE+VADDR_TEXT
+section text   align=1 valign=1 follows=header vstart=(__IMAGE_BASE__+VADDR_TEXT)
 _TEXT:
 section import align=1 valign=1 follows=text vfollows=text  ; Import address table.
 _IMPORT:
@@ -157,7 +159,7 @@ dw 0  ; Code segment (cs) base.
 ; We reuse the final 4 bytes of the .exe header (dw relocation_table_ofs,
 ; overlay_number) for code.
 .stub_msg: db 'This program cannot be run in DOS m$'
-dd IMAGE_NT_HEADERS  ; At offset 60. Points to the "PE\0\0" header.
+dd IMAGE_NT_HEADERS-_HEADER  ; At offset 60. Points to the "PE\0\0" header.
 .stub_msg2: db 'ode.', 13, 10, '$'
 times 6 db 0  ; Padding between stub text and code. Can be reused.
 .stub_start:
@@ -196,10 +198,10 @@ MinorLinkerVersion: db 0
 SizeOfCode: dd 0x00000000
 SizeOfInitializedData: dd 0x00000000
 SizeOfUninitializedData: dd 0x00000000
-AddressOfEntryPoint: dd __ENTRY_POINT__-IMAGE_BASE  ; Also called starting address.
+AddressOfEntryPoint: dd __ENTRY_POINT__-__IMAGE_BASE__  ; Also called starting address.
 BaseOfCode: dd VADDR_TEXT
 BaseOfData: dd VADDR_TEXT
-ImageBase: dd IMAGE_BASE
+ImageBase: dd _HEADER
 SectionAlignment: dd 0x1000  ; Single allowed value for Windows XP.
 FileAlignment: dd 0x200  ; Minimum value for Windows NT 3.1.
 MajorOperatingSystemVersion: dw 4
@@ -210,7 +212,7 @@ MajorSubsystemVersion: dw 3   ; Windows NT 3.1.
 MinorSubsystemVersion: dw 10  ; Windows NT 3.1.
 Win32VersionValue: dd 0
 SizeOfImage: dd VADDR_TEXT+(_TEXT_end-_TEXT+_IMPORT_end-_IMPORT+_NAME_end-_NAME+_BSS_end-_BSS)  ; Wine requires >0x1000.
-SizeOfHeaders: dd _HEADER_end_aligned
+SizeOfHeaders: dd _HEADER_end_aligned-_HEADER
 CheckSum: dd 0  ; Not checked.
 Subsystem: dw IMAGE_SUBSYSTEM
 DllCharacteristics: dw 0
@@ -225,7 +227,7 @@ IMAGE_DIRECTORY_ENTRY_EXPORT:
 .VirtualAddress: dd 0x00000000
 .Size: dd 0x00000000
 IMAGE_DIRECTORY_ENTRY_IMPORT:
-.VirtualAddress: dd IMAGE_IMPORT_DESCRIPTORS-IMAGE_BASE
+.VirtualAddress: dd IMAGE_IMPORT_DESCRIPTORS-__IMAGE_BASE__
 .Size: dd IMAGE_IMPORT_DESCRIPTORS_end-IMAGE_IMPORT_DESCRIPTORS
 IMAGE_DIRECTORY_ENTRY_RESOURCE:
 .VirtualAddress: dd 0x00000000
@@ -258,7 +260,7 @@ IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT:
 .VirtualAddress: dd 0
 .Size: dd 0
 IMAGE_DIRECTORY_ENTRY_IAT:  ; Import address table.
-.VirtualAddress: dd IMPORT_ADDRESS_TABLE-IMAGE_BASE
+.VirtualAddress: dd IMPORT_ADDRESS_TABLE-__IMAGE_BASE__
 .Size: dd IMPORT_ADDRESS_TABLE_end-IMPORT_ADDRESS_TABLE
 IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT:
 .VirtualAddress: dd 0
@@ -280,7 +282,7 @@ times 8-($-.Name) db 0
 .VirtualSize: dd (_TEXT_end-_TEXT)+(_IMPORT_end-_IMPORT)+(_NAME_end-_NAME)+(_BSS_end-_BSS)
 .VirtualAddress: dd VADDR_TEXT
 .SizeOfRawData: dd (_TEXT_end-_TEXT)+(_IMPORT_end-_IMPORT)+(_NAME_end_aligned-_NAME)
-.PointerToRawData: dd _HEADER_end_aligned
+.PointerToRawData: dd _HEADER_end_aligned-_HEADER
 .PointerToRelocations: dd 0
 .PointerToLineNumbers: dd 0
 .NumberOfRelocations: dw 0
@@ -297,11 +299,11 @@ IMAGE_SECTION_HEADER_end:
 section import
 IMAGE_IMPORT_DESCRIPTORS:
 IMAGE_IMPORT_DESCRIPTOR_0:
-.OriginalFirstThunk: dd IMPORT_ADDRESS_TABLE-IMAGE_BASE
+.OriginalFirstThunk: dd IMPORT_ADDRESS_TABLE-__IMAGE_BASE__
 .TimeDateStamp: dd 0
 .ForwarderChain: dd 0
-.Name: dd NAME_KERNEL32_DLL-IMAGE_BASE
-.FirstThunk: dd IMPORT_ADDRESS_TABLE-IMAGE_BASE
+.Name: dd NAME_KERNEL32_DLL-__IMAGE_BASE__
+.FirstThunk: dd IMPORT_ADDRESS_TABLE-__IMAGE_BASE__
 IMAGE_IMPORT_DESCRIPTOR_1:  ; Last Import directory table, marks end-of-list.
 dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
 IMAGE_IMPORT_DESCRIPTORS_end:
@@ -328,7 +330,7 @@ section text
 %ifndef __imp__%1  ; Extend the import and name sections only once.
 %define __imp__%1 __imp__%1
 [section import]
-__imp__%1: dd __name__%1-IMAGE_BASE
+__imp__%1: dd __name__%1-__IMAGE_BASE__
 [section name]
 __name__%1:
 .Hint: dw 0
