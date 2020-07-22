@@ -63,19 +63,27 @@ bits 32
 cpu 386
 
 ; The user can %define these to override the defaults.
+; !! Do macro expansion on IMAGE_BASE now, and save the result.
 %ifndef IMAGE_BASE
 IMAGE_BASE equ 0x00400000  ; Variable.
 %endif
 %ifndef AFTER_LAST_SECTION_ALIGNMENT
 AFTER_LAST_SECTION_ALIGNMENT equ 1  ; Set it to 512 to get an 1024-byte .exe.
 %endif
-%ifndef VADDR_TEXT
-VADDR_TEXT equ 0x1000
-%endif
 IMAGE_SUBSYSTEM_WINDOWS_GUI equ 2  ; gcc -mwindows
 IMAGE_SUBSYSTEM_WINDOWS_CUI equ 3  ; gcc -mconsole
 %ifndef IMAGE_SUBSYSTEM
 IMAGE_SUBSYSTEM equ IMAGE_SUBSYSTEM_WINDOWS_CUI
+%endif
+%ifndef STUB_SIZE
+STUB_SIZE equ 0x60
+%endif
+%ifndef VADDR_TEXT
+VADDR_TEXT equ (0x120+(STUB_SIZE)+4095)&~4095  ; 0x1000 by default.
+%endif
+%if VADDR_TEXT<0x120+(STUB_SIZE)
+; Wine 5.0 doesn't care, but Windows NT 3.1, Windows 95 and Windows XP do.
+%error 'VADDR_TEXT too small, must be at least 0x120+STUB_SIZE'
 %endif
 
 section header align=1 valign=1
@@ -91,6 +99,8 @@ _BSS:
 
 ; If the user forgets to call it at the end, NASM will report this error:
 ;    error: symbol `__PLEASE_CALL_endpe__' undefined
+;
+; !! Add warning if code is added after endpe.
 %macro endpe 1
   %ifdef __PLEASE_CALL_endpe__
   %error 'endpe called twice'
@@ -129,11 +139,15 @@ IMAGE_DOS_HEADER:
 __ASSERT_AT_VERBOSE__ $$+0
 ; https://github.com/pts/pts-nasm-fullprog/blob/master/pe_stub3.nasm
 .mz_sigature: db 'MZ'  ; Signature.
-.image_size_lo: dw IMAGE_NT_HEADERS  ; Image size low 9 bits.
-.image_size_hi: dw 1  ; Image size high bits, rounded up.
+.image_size_lo: dw (IMAGE_NT_HEADERS-IMAGE_DOS_HEADER)&511  ; Image size low 9 bits.
+.image_size_hi: dw (IMAGE_NT_HEADERS-IMAGE_DOS_HEADER+511)>>9  ; Image size high bits, rounded up.
 dw 0  ; Relocation count.
 dw 0  ; Paragraph (16 byte) count of header. Points to the top of the file.
-dw (0x400-(IMAGE_NT_HEADERS-$$))>>4  ; Reserve 0x340 bytes of extra memory for stack.
+%if (STUB_SIZE)<0x340
+dw (0x400-(IMAGE_NT_HEADERS-IMAGE_DOS_HEADER))>>4  ; Reserve 0x340 bytes of extra memory for stack.
+%else
+dw 0
+%endif
 dw 0xffff  ; Paragraph count of maximum required memory.
 dw 0  ; Stack segment (ss) base.
 dw 0x400  ; Stack pointer (sp).
@@ -159,9 +173,9 @@ int 0x21
 db 0xb8  ; 16-bit mov ax, ...
 dw 0x4c01  ; EXIT(1).
 int 0x21
-
-times ($$-$)&15 db 0
 __ASSERT_AT_VERBOSE__ $$+0x60
+times (STUB_SIZE)-($-$$) db 'S'
+times ($$-$)&15 db 0
 
 IMAGE_NT_HEADERS:
 db 'PE', 0, 0
@@ -262,10 +276,10 @@ IMAGE_OPTIONAL_HEADER32_end:
 IMAGE_SECTION_HEADER:
 IMAGE_SECTION_HEADER__0:
 .Name: db '.text'
-times ($$-$)&7 db 0
+times 8-($-.Name) db 0
 .VirtualSize: dd (_TEXT_end-_TEXT)+(_IMPORT_end-_IMPORT)+(_NAME_end-_NAME)+(_BSS_end-_BSS)
 .VirtualAddress: dd VADDR_TEXT
-.SizeOfRawData: dd _TEXT_end-_TEXT+_IMPORT_end-_IMPORT+_NAME_end_aligned-_NAME
+.SizeOfRawData: dd (_TEXT_end-_TEXT)+(_IMPORT_end-_IMPORT)+(_NAME_end_aligned-_NAME)
 .PointerToRawData: dd _HEADER_end_aligned
 .PointerToRelocations: dd 0
 .PointerToLineNumbers: dd 0
@@ -278,6 +292,7 @@ IMAGE_SCN_CNT_INITIALIZED_DATA equ 0x40
 IMAGE_SCN_MEM_WRITE equ 0x80000000
 .Characteristics: dd IMAGE_SCN_CNT_CODE|IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ|IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_MEM_WRITE
 IMAGE_SECTION_HEADER_end:
+; Now we are at file offset 0x120+(STUB_SIZE...align16).
 
 section import
 IMAGE_IMPORT_DESCRIPTORS:
