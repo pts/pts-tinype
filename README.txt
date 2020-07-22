@@ -53,14 +53,18 @@ Variants:
   .data section was merged to the .text section. It works on
   Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows
   95, Windows XP and Wine 5.0.
-* hh6.golden.exe (688 bytes): Like hh5.exe, but contains optimized code for
-  the hello-world, and the trailing 0 bytes are stripped.
+* hh6.golden.exe (688 bytes): Like hh5.golden.exe, but contains optimized
+  code for the hello-world, and the trailing 0 bytes are stripped.
   .data section was merged to the .text section. It works on
   Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows
   95, Windows XP and Wine 5.0. It's not possible to go below 512 bytes,
   because because Windows NT 3.1 and Windows 95 don't support section
   alignment lower than 512 or section starting at file offset 0. See
   hh2.golden.exe for the `-2' hack to make it work on Windows XP and Wine.
+* hh7.golden.exe (677 bytes): Like hh6.golden.exe, but a few more padding
+  bytes were removed. It still works on Windows NT 3.1--Windows 10.
+  It uses NASM library smallpe.inc.nasm, for convenient creation of
+  samll Win32 PE .exe executables using KERNEL32.DLL only.
 * box1.golden.exe (268 bytes): Doesn't work on Windows XP, works on Windows
   7, should work on Windows Vista ... Windows 10,
   contains some string constants overlapping header fields. On 32-bit
