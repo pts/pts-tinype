@@ -30,6 +30,9 @@ hh5.exe: hh5.nasm
 hh6.exe: hh6.nasm
 	nasm -O0 -f bin -o $@ $<
 	-chmod 755 $@
+hh6b.exe: hh6b.nasm
+	nasm -O0 -f bin -o $@ $<
+	-chmod 755 $@
 hh7.exe: hh7.nasm smallpe.inc.nasm
 	nasm -O0 -f bin -o $@ $<
 	-chmod 755 $@
