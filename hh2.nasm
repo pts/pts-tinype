@@ -15,7 +15,8 @@
 ; hh2.asm was inspired by the 268-byte .exe on
 ; https://www.codejuggle.dj/creating-the-smallest-possible-windows-executable-using-assembly-language/
 ; . The fundamental difference is that hh2.exe works on Windows XP ... Windows
-; 10, while the program above doesn't work on Windows XP.
+; 10 (but not on Windows NT 3.1 and Windows 95), while the program above
+; doesn't work on Windows XP.
 ;
 ; The generated hh2.exe works on:
 ;
