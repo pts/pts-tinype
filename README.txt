@@ -25,8 +25,8 @@ Size and compatibility matrix:
                      hh1   hh2   hh3   hh3tf hh3w  hh4   hh5   hh6   hh6b
 -------------------------------------------------------------------------
 size (bytes)         633   402   2048  1536  3072  268   1024  688   604
-Windows NT 3.1       ?     --    ?     yes   ?     --    yes   yes   yes
-Windows 95           ?     --    ?     yes   ?     --    yes   yes   yes
+Windows NT 3.1       --    --    ?     yes   ?     --    yes   yes   yes
+Windows 95           --    --    ?     yes   ?     --    yes   yes   yes
 Windows XP           yes   yes   yes   yes   yes   --    yes   yes   yes
 Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows 10 2020-07   yes   yes   yes   yes   yes   --    yes   yes   yes

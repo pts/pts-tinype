@@ -82,8 +82,8 @@ MajorOperatingSystemVersion: dw 4
 MinorOperatingSystemVersion: dw 0
 MajorImageVersion: dw 1
 MinorImageVersion: dw 0
-MajorSubsystemVersion: dw 4
-MinorSubsystemVersion: dw 0
+MajorSubsystemVersion: dw 3
+MinorSubsystemVersion: dw 10
 Win32VersionValue: dd 0
 SizeOfImage: dd (textbase - imagebase) + (_eof + bss_size - _text)  ; Wine rounds it up to a multiple of 0x1000, and loads and maps that much.
 SizeOfHeaders: dd _headers_end - _filestart  ; Windows XP needs > 0.
