@@ -22,11 +22,11 @@ How to run:
 
 Size and compatibility matrix:
 
-                     hh1   hh2   hh3   hh3tf hh3w  hh4   hh5   hh6   hh6b
+                     hh1   hh2   hh3gf hh3tf hh3wf hh4   hh5   hh6   hh6b
 -------------------------------------------------------------------------
 size (bytes)         633   402   2048  1536  3072  268   1024  688   604
-Windows NT 3.1       --    --    ?     yes   ?     --    yes   yes   yes
-Windows 95           --    --    ?     yes   ?     --    yes   yes   yes
+Windows NT 3.1       --    --    yes   yes   yes   --    yes   yes   yes
+Windows 95           --    --    yes   yes   yes   --    yes   yes   yes
 Windows XP           yes   yes   yes   yes   yes   --    yes   yes   yes
 Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows 10 2020-07   yes   yes   yes   yes   yes   --    yes   yes   yes
@@ -38,24 +38,18 @@ Variants:
   contains some string constants overlapping header fields.
   It doesn't work on Windows NT 3.51 (not even after changing the
   SubsystemVersion to 3.10), and it doesn't work on Windows 95 either.
-* hh3.golden.exe (2048 bytes): Should work on Windows XP ... Windows 10.
-  Built with MinGW GCC from a .c source, doesn't contain assembly or
-  linker tricks. Also works on Windows 95, and if the SubsystemVersion field
-  in the PE header is changed from 4.0 to 3.10, it also works
-  on Windows NT 3.1.
-* hh3t.golden.exe (1536 bytes): Should work on Windows XP ... Windows 10.
-  Built with TCC 0.9.26 from a .c source, doesn't contain assembly or
-  linker tricks. Also works on Windows 95, and if the SubsystemVersion field
-  in the PE header is changed from 4.0 to 3.10, it also works
-  on Windows NT 3.1.
-* hh3tf.golden.exe (1536 bytes): Like hh3t.exe, but the SubsystemVersion field
-  in the PE header was changed from 4.0 to 3.10, to make it also work
-  on Windows NT 3.1. It also works on Windowx XP.
-* hh3w.golden.exe (3072 bytes): Should work on Windows XP ... Windows 10.
-  Built with OpenWatcom V2 owcc from a .c source, doesn't contain assembly or
-  linker tricks. Also works on Windows 95, and if the SubsystemVersion field
-  in the PE header is changed from 4.0 to 3.10, it also works
-  on Windows NT 3.1.
+* hh3gf.golden.exe (2048 bytes): Works on Windows NT 3.1 ... Windows 10.
+  Built with MinGW GCC from a .c source, and the SubsystemVersion field in
+  the PE header was changed from 4.0 to 3.10 for Windows NT 3.1
+  compatibility,
+* hh3tf.golden.exe (2048 bytes): Works on Windows NT 3.1 ... Windows 10.
+  Built with TCC 0.9.26 from a .c source, and the SubsystemVersion field in
+  the PE header was changed from 4.0 to 3.10 for Windows NT 3.1
+  compatibility,
+* hh3wf.golden.exe (2048 bytes): Works on Windows NT 3.1 ... Windows 10.
+  Built with OpenWatcom V2 owcc from a .c source, and the SubsystemVersion
+  field in the PE header was changed from 4.0 to 3.10 for Windows NT 3.1
+  compatibility,
 * hh4.golden.exe (268 bytes): Doesn't work on Windows NT 3.1, Windows 95,
   Windows XP, works on Windows 7, doesn't work on Windows 10,
   should work on Windows Vista ... Windows 7,
