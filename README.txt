@@ -20,6 +20,17 @@ How to run:
   QEMU:
   http://ptspts.blogspot.com/2017/09/how-to-run-windows-xp-on-linux-using-qemu-and-kvm.html
 
+Size and compatibility matrix:
+
+                     hh1   hh2   hh3   hh3tf hh3w  hh4   hh5   hh6   hh6b
+-------------------------------------------------------------------------
+size (bytes)         633   402   2048  1536  3072  268   1024  688   604
+Windows NT 3.1       ?     --    ?     yes   ?     --    yes   yes   yes
+Windows 95           ?     --    ?     yes   ?     --    yes   yes   yes
+Windows XP           yes   yes   yes   yes   yes   --    yes   yes   yes
+Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 10 2020-07   yes   yes   yes   yes   yes   --    yes   yes   yes
+
 Variants:
 
 * hh1.golden.exe (663 bytes): Should work on Windows XP ... Windows 10.
@@ -46,7 +57,8 @@ Variants:
   in the PE header is changed from 4.0 to 3.10, it also works
   on Windows NT 3.1.
 * hh4.golden.exe (268 bytes): Doesn't work on Windows NT 3.1, Windows 95,
-  Windows XP, works on Windows 7, should work on Windows Vista ... Windows 10,
+  Windows XP, works on Windows 7, doesn't work on Windows 10,
+  should work on Windows Vista ... Windows 7,
   contains some string constants overlapping header fields. On 32-bit
   Windows 7 the first 256 bytes would have been enough.
 * hh5.golden.exe (1024 bytes): Like hh3tf.exe, but smaller, because the
