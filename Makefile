@@ -1,12 +1,15 @@
 .PHONY: all clean
 
 # hh3*.exe are not here, they need a cross-compiler to build.
-all: hh1.exe hh2.exe hh6a.exe hh6b.exe hh6c.exe hh6d.exe hh7.exe box1.exe
+all: hh1.exe hh2.exe hh2d.exe hh6a.exe hh6b.exe hh6c.exe hh6d.exe hh7.exe box1.exe
 
 hh1.exe: hh1.nasm
 	nasm -O0 -f bin -o $@ $<
 	-chmod 755 $@
 hh2.exe: hh2.nasm
+	nasm -O0 -f bin -o $@ $<
+	-chmod 755 $@
+hh2d.exe: hh2d.nasm
 	nasm -O0 -f bin -o $@ $<
 	-chmod 755 $@
 hh3g.exe: hh3.c
@@ -38,4 +41,4 @@ box1.exe: box1.nasm
 	-chmod 755 $@
 
 clean:
-	rm -f hh1.exe hh2.exe hh3g.exe hh3t.exe hh3w.exe hh6?.exe hh7.exe box1.exe
+	rm -f hh1.exe hh2.exe hh2d.exe hh3g.exe hh3t.exe hh3w.exe hh6?.exe hh7.exe box1.exe

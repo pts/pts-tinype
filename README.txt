@@ -22,15 +22,15 @@ How to run:
 
 Size and compatibility matrix:
 
-                     hh1   hh2   hh3gf hh3tf hh3wf hh6a  hh6b  hh6c  hh6d  hh7
----------------------------------------------------------------------------------
-size (bytes)         268   402   2048  1536  3072  1536  1024  688   604   604
-Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows NT 3.1       --    --    yes   yes   yes   yes   yes   yes   yes   yes
-Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes
-Windows XP           --    yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 10 2020-07   --    yes   yes   yes   yes   yes   yes   yes   yes   yes
+                     hh1   hh2   hh2d  hh3gf hh3tf hh3wf hh6a  hh6b  hh6c  hh6d  hh7
+---------------------------------------------------------------------------------------
+size (bytes)         268   402   408   2048  1536  3072  1536  1024  688   604   604
+Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows NT 3.1       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes
+Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows XP           --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 10 2020-07   --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 
 Variants:
 
@@ -43,6 +43,11 @@ Variants:
   contains some string constants overlapping header fields.
   It doesn't work on Windows NT 3.51 (not even after changing the
   SubsystemVersion to 3.10), and it doesn't work on Windows 95 either.
+* hh2d.golden.exe (408 bytes): Should work on Windows 95 ... Windows 10,
+  contains some string constants overlapping header fields.
+  It doesn't work on Windows NT 3.51 (not even after changing the
+  SubsystemVersion to 3.10). It employs a trick so that the entire file is
+  loaded to section .text, without having to align to it 512 bytes.
 * hh3gf.golden.exe (2048 bytes): Works on Windows NT 3.1 ... Windows 10.
   Built with MinGW GCC from a .c source, and the SubsystemVersion field in
   the PE header was changed from 4.0 to 3.10 for Windows NT 3.1
@@ -157,5 +162,6 @@ Loader limitations:
   must start on a file offset divisible by 4.
 * SizeOfOptionalHeader must be >= 0x78.
 * SizeOfHeaders must be > 0.
+* Windows 95 needs at least 10 entries in IMAGE_DATA_DIRECTORY.
 
 __END__
