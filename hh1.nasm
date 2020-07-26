@@ -1,16 +1,16 @@
 ;
-; hh4.nasm
+; hh1.nasm
 ; by pts@fazekas.hu at Sat Jan 13 11:53:58 CET 2018
 ;
-; How to compile hh4.exe:
+; How to compile hh1.exe:
 ;
-;   $ nasm -f bin -o hh4.exe hh4.nasm
-;   $ chmod 755 hh4.exe  # For QEMU Samba server.
-;   $ ndisasm -b 32 -e 0x8c -o 0x40008c hh4.exe
+;   $ nasm -f bin -o hh1.exe hh1.nasm
+;   $ chmod 755 hh1.exe  # For QEMU Samba server.
+;   $ ndisasm -b 32 -e 0x8c -o 0x40008c hh1.exe
 ;
-; hh4.asm was inspired by the 268-byte .exe on
+; hh1.asm was inspired by the 268-byte .exe on
 ; https://www.codejuggle.dj/creating-the-smallest-possible-windows-executable-using-assembly-language/
-; . The fundamental difference is that hh4.exe works on Windows XP ... Windows
+; . The fundamental difference is that hh1.exe works on Windows XP ... Windows
 ; 10, while the program above doesn't work on Windows NT 3.1, Windows, 95 and
 ; Windows XP (but works on Windows 7).
 ;
@@ -19,11 +19,11 @@
 ; on Windows XP it's at least 512 bytes. (This has been verified: recompiling
 ; hh3.c with -Wl,--section-alignment,16,--file-alignment,16 made it stop
 ; working on Windows NT 3.51, Windows 95 and Windows XP, but it continued
-; working on Windows 7 and Wine. hh4.nasm never worked
+; working on Windows 7 and Wine. hh1.nasm never worked
 ; on these systems for other header-related reasons.)
 ; (TODO(pts): Make hhwa4.exe work on Wine, which has 4 as alignment.)
 ;
-; The generated hh4.exe works on:
+; The generated hh1.exe works on:
 ;
 ; * Wine 1.6.2 on Linux.
 ; * It doesn't work on

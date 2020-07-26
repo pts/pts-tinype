@@ -1,8 +1,11 @@
 .PHONY: all clean
 
 # hh3*.exe are not here, they need a cross-compiler to build.
-all: hh2.exe hh4.exe hh6a.exe hh6b.exe hh6c.exe hh6d.exe hh7.exe box1.exe
+all: hh1.exe hh2.exe hh6a.exe hh6b.exe hh6c.exe hh6d.exe hh7.exe box1.exe
 
+hh1.exe: hh1.nasm
+	nasm -O0 -f bin -o $@ $<
+	-chmod 755 $@
 hh2.exe: hh2.nasm
 	nasm -O0 -f bin -o $@ $<
 	-chmod 755 $@
@@ -14,9 +17,6 @@ hh3t.exe: hh3.c
 	-chmod 755 $@
 hh3w.exe: hh3.c startw.o
 	owcc -I"$(WATCOM)"/h/nt -fno-stack-check -bwin32 -march=i386 -Wl,runtime -Wl,console=3.10 -W -Wall -Wextra -s -Os -fnostdlib -o $@ $< startw.o
-	-chmod 755 $@
-hh4.exe: hh4.nasm
-	nasm -O0 -f bin -o $@ $<
 	-chmod 755 $@
 hh6a.exe: hh6a.nasm
 	nasm -O0 -f bin -o $@ $<
@@ -38,4 +38,4 @@ box1.exe: box1.nasm
 	-chmod 755 $@
 
 clean:
-	rm -f hh2.exe hh3g.exe hh3t.exe hh3w.exe hh4.exe hh6?.exe hh7.exe box1.exe
+	rm -f hh1.exe hh2.exe hh3g.exe hh3t.exe hh3w.exe hh6?.exe hh7.exe box1.exe

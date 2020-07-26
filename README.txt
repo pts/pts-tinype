@@ -22,18 +22,23 @@ How to run:
 
 Size and compatibility matrix:
 
-                     hh2   hh3gf hh3tf hh3wf hh4   hh6a  hh6b  hh6c  hh6d
+                     hh1   hh2   hh3gf hh3tf hh3wf hh6a  hh6b  hh6c  hh6d
 ---------------------------------------------------------------------------
-size (bytes)         402   2048  1536  3072  268   1536  1024  688   604
+size (bytes)         268   402   2048  1536  3072  1536  1024  688   604
 Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows NT 3.1       --    yes   yes   yes   --    yes   yes   yes   yes
-Windows 95           --    yes   yes   yes   --    yes   yes   yes   yes
-Windows XP           yes   yes   yes   yes   --    yes   yes   yes   yes
+Windows NT 3.1       --    --    yes   yes   yes   yes   yes   yes   yes
+Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes
+Windows XP           --    yes   yes   yes   yes   yes   yes   yes   yes
 Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 10 2020-07   yes   yes   yes   yes   --    yes   yes   yes   yes
+Windows 10 2020-07   --    yes   yes   yes   yes   yes   yes   yes   yes
 
 Variants:
 
+* hh1.golden.exe (268 bytes): Doesn't work on Windows NT 3.1, Windows 95,
+  Windows XP, works on Windows 7, doesn't work on Windows 10,
+  should work on Windows Vista ... Windows 7,
+  contains some string constants overlapping header fields. On 32-bit
+  Windows 7 the first 256 bytes would have been enough.
 * hh2.golden.exe (402 bytes): Should work on Windows XP ... Windows 10,
   contains some string constants overlapping header fields.
   It doesn't work on Windows NT 3.51 (not even after changing the
@@ -50,11 +55,6 @@ Variants:
   Built with OpenWatcom V2 owcc from a .c source, and the SubsystemVersion
   field in the PE header was changed from 4.0 to 3.10 for Windows NT 3.1
   compatibility,
-* hh4.golden.exe (268 bytes): Doesn't work on Windows NT 3.1, Windows 95,
-  Windows XP, works on Windows 7, doesn't work on Windows 10,
-  should work on Windows Vista ... Windows 7,
-  contains some string constants overlapping header fields. On 32-bit
-  Windows 7 the first 256 bytes would have been enough.
 * hh6a.golden.exe (1536 bytes); Same as hh3tf.golden.exe, but reimplmented
   in NASM.
 * hh6b.golden.exe (1024 bytes): Like hh6a.golden.exe, but smaller, because
@@ -144,7 +144,7 @@ Loader limitations:
 * On Windows NT 3.1 and Windows XP, SectionAlignment must be 4096 (0x1000),
   and FileAlignment must be a power of 2 at least 512.
 * On Windows 7, SectionAligment == FileAlignment == 4 can work. See
-  hh4.nasm.
+  hh1.nasm.
 * Windows NT 3.1 requires SubsystemVersion=3.10, more recent systems work
   with =3.10 and =4.0 (and possibly others).
 * Windows NT 3.1 and Windows 95 look at some PE header fields ignored by
