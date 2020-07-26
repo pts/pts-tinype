@@ -43,6 +43,19 @@
 ; * len(imported_names) >= 1: ['ExitProcess']
 ; * len(library_names) >= 1: ['kernel32']
 ;
+;
+; hh2.nasm was created like this:
+;
+; * The .nasm source in
+;   https://www.codejuggle.dj/creating-the-smallest-possible-windows-executable-using-assembly-language/
+;   was studied.
+; * The .exe created from the hello-world .c program in
+;   https://stackoverflow.com/questions/42022132/how-to-create-tiny-pe-win32-executables-using-mingw
+;   was manually converted back to .nasm, pointers changed to symbols and
+;   address computations added one-by-one.
+; * The 2nd .nasm file was gradually changed to resemble the 1st .nasm file,
+;   while making sure that the generated .exe still works on Windows XP.
+;
 bits 32
 imagebase equ 0x400000  ; Default base since Windows 95.
 textbase equ imagebase + 0x3000

@@ -346,7 +346,7 @@ call [__imp__%1]
 ; Usage: kcall ExitProcess
 ; This needs NASM version >= 2.03 (released 2008-06-10).
 %macro kcall 1
-%iftoken %1  ; This needs NASM >= 2.02.
+%iftoken %1  ; This needs NASM >= 2.03.
 %ifid %1
 %defstr __dllfuncname__ %1  ; This needs NASM >= 2.03.
 kcall %1, __dllfuncname__

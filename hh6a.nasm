@@ -1,12 +1,8 @@
 ;
-; hh5.nasm: small (1024 bytes) and ultraportable Win32 PE .exe
-; Compile: nasm -O0 -f bin -o hh5.exe hh5.nasm
+; hh6a.nasm: tiny and ultraportable Win32 PE .exe
+; Compile: nasm -O0 -f bin -o hh6a.exe hh6a.nasm
 ;
-; It works on Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows
-; 95, Windows XP and Wine 5.0
-;
-; This file is based on hh3tf.nasm, and .data section was merged to the
-; .text section to make it 512 bytes smaller.
+; This works on Windows NT 3.1--Windows 10.
 ;
 
 ; Asserts that we are at offset %1 from the beginning of the input file
@@ -58,7 +54,7 @@ SizeOfInitializedData: dd 0x00000000
 SizeOfUninitializedData: dd 0x00000000
 AddressOfEntryPoint: dd _start+(VADDR_TEXT-SECTION_TEXT)  ; Also called starting address.
 BaseOfCode: dd VADDR_TEXT
-BaseOfData: dd VADDR_TEXT
+BaseOfData: dd VADDR_DATA
 ImageBase: dd IMAGE_BASE
 SectionAlignment: dd 0x1000  ; Single allowed value for Windows XP.
 FileAlignment: dd 0x200  ; Minimum value for Windows NT 3.1.
@@ -70,7 +66,7 @@ MajorSubsystemVersion: dw 3   ; Windows NT 3.1.
 MinorSubsystemVersion: dw 10  ; Windows NT 3.1.
 Win32VersionValue: dd 0
 BSS_SIZE EQU 1  ; Why?
-SizeOfImage: dd ((SECTION_TEXT_end-SECTION_TEXT+4095)&~4095)+((BSS_SIZE+4095)&~4095)
+SizeOfImage: dd ((SECTION_TEXT_end-SECTION_TEXT+4095)&~4095)+((SECTION_DATA_end-SECTION_DATA+4095)&~4095)+((BSS_SIZE+4095)&~4095)
 SizeOfHeaders: dd HEADERS_end_aligned
 CheckSum: dd 0xd43c  ; !! Change to 0 to avoid checking.
 Subsystem: dw 3  ; IMAGE_SUBSYSTEM_WINDOWS_CUI; gcc -mconsole
@@ -86,7 +82,7 @@ IMAGE_DIRECTORY_ENTRY_EXPORT:
 .VirtualAddress: dd 0x00000000
 .Size: dd 0x00000000
 IMAGE_DIRECTORY_ENTRY_IMPORT:
-.VirtualAddress: dd IMAGE_IMPORT_DESCRIPTORS+(VADDR_TEXT-SECTION_TEXT)
+.VirtualAddress: dd IMAGE_IMPORT_DESCRIPTORS+(VADDR_DATA-SECTION_DATA)
 .Size: dd IMAGE_IMPORT_DESCRIPTORS_end-IMAGE_IMPORT_DESCRIPTORS
 IMAGE_DIRECTORY_ENTRY_RESOURCE:
 .VirtualAddress: dd 0x00000000
@@ -119,7 +115,7 @@ IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT:
 .VirtualAddress: dd 0
 .Size: dd 0
 IMAGE_DIRECTORY_ENTRY_IAT:  ; Import address table.
-.VirtualAddress: dd IMPORT_ADDRESS_TABLE+(VADDR_TEXT-SECTION_TEXT)
+.VirtualAddress: dd IMPORT_ADDRESS_TABLE+(VADDR_DATA-SECTION_DATA)
 .Size: dd IMPORT_ADDRESS_TABLE_end-IMPORT_ADDRESS_TABLE
 IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT:
 .VirtualAddress: dd 0
@@ -151,9 +147,23 @@ VADDR_TEXT equ 0x1000
 IMAGE_SCN_CNT_CODE equ 0x20
 IMAGE_SCN_MEM_EXECUTE equ 0x20000000
 IMAGE_SCN_MEM_READ equ 0x40000000
+.Characteristics: dd IMAGE_SCN_CNT_CODE|IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ
+
+IMAGE_SECTION_HEADER__1:
+.Name: db '.data'
+times ($$-$)&7 db 0
+.VirtualSize: dd SECTION_DATA_end-SECTION_DATA
+VADDR_DATA equ 0x2000
+.VirtualAddress: dd VADDR_DATA
+.SizeOfRawData: dd SECTION_DATA_end_aligned-SECTION_DATA  ; !! Can we decrease this and make the file smaller for Windows NT 3.1?
+.PointerToRawData: dd SECTION_DATA
+.PointerToRelocations: dd 0
+.PointerToLineNumbers: dd 0
+.NumberOfRelocations: dw 0
+.NumberOfLineNumbers: dw 0
 IMAGE_SCN_CNT_INITIALIZED_DATA equ 0x40
 IMAGE_SCN_MEM_WRITE equ 0x80000000
-.Characteristics: dd IMAGE_SCN_CNT_CODE|IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ|IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_MEM_WRITE
+.Characteristics: dd IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_MEM_WRITE|IMAGE_SCN_MEM_READ
 
 IMAGE_SECTION_HEADER_end:
 times ($$-$)&511 db 0
@@ -176,7 +186,7 @@ lea eax, [ebp-0x4]
 push eax
 mov eax, 0xf
 push eax
-mov eax, message+(IMAGE_BASE+VADDR_TEXT-SECTION_TEXT)
+mov eax, message+(IMAGE_BASE+VADDR_DATA-SECTION_DATA)
 push eax
 mov eax, [ebp-0x8]
 push eax
@@ -192,53 +202,60 @@ times ($$-$)&7 db 0
 ; TODO(pts): Replace these with indirect `call [...]'.
 __call__GetStdHandle@4:
 ;dd 0x203825ff, 0x00000040
-jmp [__imp__GetStdHandle@4+(IMAGE_BASE+VADDR_TEXT-SECTION_TEXT)]
+jmp [__imp__GetStdHandle@4+(IMAGE_BASE+VADDR_DATA-SECTION_DATA)]
 dw 0
 __call__WriteFile@20:
-jmp [__imp__WriteFile@20+(IMAGE_BASE+VADDR_TEXT-SECTION_TEXT)]
+jmp [__imp__WriteFile@20+(IMAGE_BASE+VADDR_DATA-SECTION_DATA)]
 dw 0
 __call__ExitProcess@4:
-jmp [__imp__ExitProcess@4+(IMAGE_BASE+VADDR_TEXT-SECTION_TEXT)]
+jmp [__imp__ExitProcess@4+(IMAGE_BASE+VADDR_DATA-SECTION_DATA)]
 dw 0
+SECTION_TEXT_end:
+times ($$-$)&511 db 0
+SECTION_TEXT_end_aligned:
 
-;SECTION_DATA:
-
+SECTION_DATA:
+aa $$+0x0400
 message:
 db 'Hello, World!', 13, 10, 0
+aa $$+0x0410
 IMAGE_IMPORT_DESCRIPTORS:
-IMAGE_IMPORT_DESCRIPTOR_0:  ; Import directory table.
-.OriginalFirstThunk: dd IMPORTED_SYMBOL_NAMES+(VADDR_TEXT-SECTION_TEXT)
+IMAGE_IMPORT_DESCRIPTOR_0:
+.OriginalFirstThunk: dd IMPORTED_SYMBOL_NAMES+(VADDR_DATA-SECTION_DATA)
 .TimeDateStamp: dd 0
 .ForwarderChain: dd 0
-.Name: dd NAME_KERNEL32_DLL+(VADDR_TEXT-SECTION_TEXT)
-.FirstThunk: dd IMPORT_ADDRESS_TABLE+(VADDR_TEXT-SECTION_TEXT)
-IMAGE_IMPORT_DESCRIPTOR_1:  ; Last Import directory table, marks end-of-list.
-dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
+.Name: dd NAME_KERNEL32_DLL+(VADDR_DATA-SECTION_DATA)
+.FirstThunk: dd IMPORT_ADDRESS_TABLE+(VADDR_DATA-SECTION_DATA)
+dd 0, 0, 0, 0, 0  ; !! Why is this padding needed?
 IMAGE_IMPORT_DESCRIPTORS_end:
 
+aa $$+0x0438
 IMPORT_ADDRESS_TABLE:  ; Import address table. Modified by the PE loader before jumping to _entry.
-__imp__GetStdHandle@4: dd NAME_GetStdHandle+(VADDR_TEXT-SECTION_TEXT)
-__imp__WriteFile@20: dd NAME_WriteFile+(VADDR_TEXT-SECTION_TEXT)
-__imp__ExitProcess@4 dd NAME_ExitProcess+(VADDR_TEXT-SECTION_TEXT)
+__imp__GetStdHandle@4: dd NAME_GetStdHandle+(VADDR_DATA-SECTION_DATA)
+__imp__WriteFile@20: dd NAME_WriteFile+(VADDR_DATA-SECTION_DATA)
+__imp__ExitProcess@4 dd NAME_ExitProcess+(VADDR_DATA-SECTION_DATA)
 dd 0  ; Marks end-of-list.
 IMPORT_ADDRESS_TABLE_end:
 
+aa $$+0x0448
 IMPORTED_SYMBOL_NAMES:
 ; !! To make it smaller, reuse IMPORT_ADDRESS_TABLE for this.
-dd NAME_GetStdHandle+(VADDR_TEXT-SECTION_TEXT)
-dd NAME_WriteFile+(VADDR_TEXT-SECTION_TEXT)
-dd NAME_ExitProcess+(VADDR_TEXT-SECTION_TEXT)
+dd NAME_GetStdHandle+(VADDR_DATA-SECTION_DATA)
+dd NAME_WriteFile+(VADDR_DATA-SECTION_DATA)
+dd NAME_ExitProcess+(VADDR_DATA-SECTION_DATA)
 dd 0  ; Marks end-of-list.
+aa $$+0x0458
 NAME_KERNEL32_DLL: db 'kernel32.dll', 0
+aa $$+0x0465
 ; The `0, 0, ' is the .Hint.
 NAME_GetStdHandle: db 0, 0, 'GetStdHandle', 0
 NAME_WriteFile: db 0, 0, 'WriteFile', 0
 NAME_ExitProcess: db 0, 0, 'ExitProcess', 0
 dd 0  ; Why is this needed? A dw is not enough.
 times ($$-$)&15 db 0
-
-SECTION_TEXT_end:
+aa $$+0x04a0
+SECTION_DATA_end:
 times ($$-$)&511 db 0
-SECTION_TEXT_end_aligned:
+SECTION_DATA_end_aligned:
 
-aa $$+0x0400
+aa $$+0x0600

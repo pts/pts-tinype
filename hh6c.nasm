@@ -1,12 +1,12 @@
 ;
-; hh6.nasm: small (668 bytes) and ultraportable Win32 PE .exe
-; Compile: nasm -O0 -f bin -o hh6.exe hh6.nasm
+; hh6c.nasm: small (668 bytes) and ultraportable Win32 PE .exe
+; Compile: nasm -O0 -f bin -o hh6c.exe hh6c.nasm
 ;
 ; It works on Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows
 ; 95, Windows XP and Wine 5.0.
 ;
-; This file is based on hh3tf.nasm, and .data section was merged to the
-; .text section to make it 512 bytes smaller.
+; This file is based on hh6b.nasm, and the .text section in the file was
+; truncated to make it 512 bytes smaller.
 ;
 
 ; Asserts that we are at offset %1 from the beginning of the input file
