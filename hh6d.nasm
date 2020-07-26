@@ -1,5 +1,7 @@
 ;
 ; hh6d.nasm: small (668 bytes) and ultraportable Win32 PE .exe
+; by pts@fazekas.hu on 2020-07-25
+;
 ; Compile: nasm -O0 -f bin -o hh6d.exe hh6d.nasm
 ;
 ; It works on Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows

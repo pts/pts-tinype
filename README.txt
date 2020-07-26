@@ -22,19 +22,18 @@ How to run:
 
 Size and compatibility matrix:
 
-                     hh1   hh2   hh3gf hh3tf hh3wf hh4   hh6a  hh6b  hh6c  hh6d
----------------------------------------------------------------------------------
-size (bytes)         663   402   2048  1536  3072  268   1536  1024  688   604
-Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows NT 3.1       --    --    yes   yes   yes   --    yes   yes   yes   yes
-Windows 95           --    --    yes   yes   yes   --    yes   yes   yes   yes
-Windows XP           yes   yes   yes   yes   yes   --    yes   yes   yes   yes
-Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 10 2020-07   yes   yes   yes   yes   yes   --    yes   yes   yes   yes
+                     hh2   hh3gf hh3tf hh3wf hh4   hh6a  hh6b  hh6c  hh6d
+---------------------------------------------------------------------------
+size (bytes)         402   2048  1536  3072  268   1536  1024  688   604
+Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows NT 3.1       --    yes   yes   yes   --    yes   yes   yes   yes
+Windows 95           --    yes   yes   yes   --    yes   yes   yes   yes
+Windows XP           yes   yes   yes   yes   --    yes   yes   yes   yes
+Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 10 2020-07   yes   yes   yes   yes   --    yes   yes   yes   yes
 
 Variants:
 
-* hh1.golden.exe (663 bytes): Should work on Windows XP ... Windows 10.
 * hh2.golden.exe (402 bytes): Should work on Windows XP ... Windows 10,
   contains some string constants overlapping header fields.
   It doesn't work on Windows NT 3.51 (not even after changing the
@@ -90,9 +89,9 @@ How to compile:
 
 * On a Unix system (e.g. Linux) with the `nasm' and `make' tools installed,
   just run `make' (without the quotes) in the directory containing hh2.nasm.
-* Alternatively, on other systems, look at the beginning of the hh2.nasm and
-  hh1.nasm source files for compilation instructions. On Windows, you may
-  have to run `nasmw' instead of `nasm'.
+  The minimum NASM version required is 0.99.06.
+* Alternatively, on other systems, look at the beginning of the hh6d.nasm
+  etc. On Windows, you may have to run `nasmw' instead of `nasm'.
 
 Related projects and docs:
 
