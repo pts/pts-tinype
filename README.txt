@@ -22,15 +22,15 @@ How to run:
 
 Size and compatibility matrix:
 
-                     hh1   hh2   hh3gf hh3tf hh3wf hh6a  hh6b  hh6c  hh6d
----------------------------------------------------------------------------
-size (bytes)         268   402   2048  1536  3072  1536  1024  688   604
-Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows NT 3.1       --    --    yes   yes   yes   yes   yes   yes   yes
-Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes
-Windows XP           --    yes   yes   yes   yes   yes   yes   yes   yes
-Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 10 2020-07   --    yes   yes   yes   yes   yes   yes   yes   yes
+                     hh1   hh2   hh3gf hh3tf hh3wf hh6a  hh6b  hh6c  hh6d  hh7
+---------------------------------------------------------------------------------
+size (bytes)         268   402   2048  1536  3072  1536  1024  688   604   604
+Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows NT 3.1       --    --    yes   yes   yes   yes   yes   yes   yes   yes
+Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes
+Windows XP           --    yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 10 2020-07   --    yes   yes   yes   yes   yes   yes   yes   yes   yes
 
 Variants:
 
@@ -74,10 +74,9 @@ Variants:
   because Windows NT 3.1 and Windows 95 don't support section
   alignment lower than 512 or section starting at file offset 0. See
   hh2.golden.exe for the `-2' hack to make it work on Windows XP and Wine.
-* hh7.golden.exe (677 bytes): Like hh6c.golden.exe, but a few more padding
-  bytes were removed. It still works on Windows NT 3.1--Windows 10.
-  It uses NASM library smallpe.inc.nasm, for convenient creation of
-  samll Win32 PE .exe executables using KERNEL32.DLL only.
+* hh7.golden.exe (604 bytes): Like hh6d.golden.exe, but it uses NASM library
+  smallpe.inc.nasm, for convenient creation of small arbitrary (i.e. not
+  only hello-world) Win32 PE .exe executables using KERNEL32.DLL only.
 * box1.golden.exe (268 bytes): Doesn't work on Windows XP, works on Windows
   7, should work on Windows Vista ... Windows 10,
   contains some string constants overlapping header fields. On 32-bit
@@ -154,6 +153,8 @@ Loader limitations:
 * It's OK that the file size isn't divisile by 0x200 (512), the file can be
   truncated.
 * On Windows 7 64-bit, the file size must be at least 268 bytes.
+* On Windows NT 3.1 (and possibly others), the PE header (IMAGE_NT_HEADERS)
+  must start on a file offset divisible by 4.
 * SizeOfOptionalHeader must be >= 0x78.
 * SizeOfHeaders must be > 0.
 
