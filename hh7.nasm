@@ -1,5 +1,5 @@
 ;
-; hh7.nasm: small (604 bytes), flexible and ultraportable Win32 PE .exe
+; hh7.nasm: small (584 bytes), flexible and ultraportable Win32 PE .exe
 ; by pts@fazekas.hu on 2020-07-25
 ;
 ; Compile: nasm -O0 -f bin -o hh7.exe hh7.nasm

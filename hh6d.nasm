@@ -1,5 +1,5 @@
 ;
-; hh6d.nasm: small (668 bytes) and ultraportable Win32 PE .exe
+; hh6d.nasm: small (584 bytes) and ultraportable Win32 PE .exe
 ; by pts@fazekas.hu on 2020-07-25
 ;
 ; Compile: nasm -O0 -f bin -o hh6d.exe hh6d.nasm
@@ -47,7 +47,6 @@ dd IMAGE_NT_HEADERS
 aa $$+0x40
 
 IMAGE_BASE equ 0x00400000  ; Variable.
-AFTER_LAST_SECTION_ALIGNMENT equ 1  ; Set it to 512 to get an 1024-byte .exe.
 BSS_SIZE EQU 0
 ;HEADER_end_aligned EQU 0x400
 HEADER_end_aligned EQU 0x200
@@ -84,7 +83,7 @@ MinorImageVersion: dw 0
 MajorSubsystemVersion: dw 3   ; Windows NT 3.1.
 MinorSubsystemVersion: dw 10  ; Windows NT 3.1.
 Win32VersionValue: dd 0
-SizeOfImage: dd VADDR_TEXT+SECTION_TEXT_end-HEADER_end_aligned+BSS_SIZE
+SizeOfImage: dd VADDR_TEXT+SECTION_TEXT_end-HEADER_end_aligned+EXTRA_BSS_SIZE+BSS_SIZE
 SizeOfHeaders: dd HEADERS_end
 CheckSum: dd 0
 Subsystem: dw 3  ; IMAGE_SUBSYSTEM_WINDOWS_CUI; gcc -mconsole
@@ -153,10 +152,10 @@ IMAGE_SECTION_HEADER:
 IMAGE_SECTION_HEADER__0:
 .Name: db '.text'
 times ($$-$)&7 db 0
-.VirtualSize: dd SECTION_TEXT_end-HEADER_end_aligned+BSS_SIZE
+.VirtualSize: dd SECTION_TEXT_end-HEADER_end_aligned+EXTRA_BSS_SIZE+BSS_SIZE
 VADDR_TEXT equ 0x1000
 .VirtualAddress: dd VADDR_TEXT
-.SizeOfRawData: dd SECTION_TEXT_end_aligned-HEADER_end_aligned
+.SizeOfRawData: dd SECTION_TEXT_end-HEADER_end_aligned
 .PointerToRawData: dd HEADER_end_aligned
 .PointerToRelocations: dd 0
 .PointerToLineNumbers: dd 0
@@ -216,6 +215,9 @@ __imp__ExitProcess@4 dd NAME_ExitProcess+(VADDR_HEADER)
 dd 0  ; Marks end-of-list.
 IMPORT_ADDRESS_TABLE_end:
 
+
+SECTION_TEXT_end:
+
 ; Windows 95 requires this to be part of a section; Windows NT 3.1 and
 ; Windows XP work if this is in the header.
 IMAGE_IMPORT_DESCRIPTORS:
@@ -226,9 +228,6 @@ IMAGE_IMPORT_DESCRIPTOR_0:
 .Name: dd NAME_KERNEL32_DLL+(VADDR_HEADER)  ; !!!
 .FirstThunk: dd IMPORT_ADDRESS_TABLE+(VADDR_TEXT-HEADER_end_aligned)
 IMAGE_IMPORT_DESCRIPTOR_1:  ; Last Import directory table, marks end-of-list.
-dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
-IMAGE_IMPORT_DESCRIPTORS_end:
-
-SECTION_TEXT_end:
-times (($$-$) %% AFTER_LAST_SECTION_ALIGNMENT+AFTER_LAST_SECTION_ALIGNMENT)%AFTER_LAST_SECTION_ALIGNMENT db 0
-SECTION_TEXT_end_aligned:
+;dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
+EXTRA_BSS_SIZE equ 4*5  ; For the end-of-list bytes above.
+IMAGE_IMPORT_DESCRIPTORS_end equ $+EXTRA_BSS_SIZE

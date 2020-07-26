@@ -4,7 +4,7 @@ pts-tinype is a set of tiny hello-world Win32 PE .exe executables for the
 console (Command Prompt), with assembly source code. The smallest one,
 hh2.golden.exe is just 402 bytes large, and it runs on Windows XP ...
 Windows 10. The smallest one which runs on all Win32 systems (Windows NT 3.1
-to Windows 10), hh6d.golden.exe, is 604 bytes.
+to Windows 10), hh6d.golden.exe, is 584 bytes.
 
 How to run:
 
@@ -24,7 +24,7 @@ Size and compatibility matrix:
 
                      hh1   hh2   hh2d  hh3gf hh3tf hh3wf hh6a  hh6b  hh6c  hh6d  hh7
 ---------------------------------------------------------------------------------------
-size (bytes)         268   402   408   2048  1536  3072  1536  1024  688   604   604
+size (bytes)         268   402   408   2048  1536  3072  1536  1024  688   584   584
 Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows NT 3.1       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes
 Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes
@@ -71,7 +71,7 @@ Variants:
   .data section was merged to the .text section. It works on
   Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows
   95, Windows XP and Wine 5.0.
-* hh6d.golden.exe (604 bytes): Like hh6c.golden.exe, but some padding bytes
+* hh6d.golden.exe (584 bytes): Like hh6c.golden.exe, but some padding bytes
   and some image data directory entried were removed, and some read-only data
   has been moved from the .text section to the header. It works on
   Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows
@@ -79,7 +79,7 @@ Variants:
   because Windows NT 3.1 and Windows 95 don't support section
   alignment lower than 512 or section starting at file offset 0. See
   hh2.golden.exe for the `-2' hack to make it work on Windows XP and Wine.
-* hh7.golden.exe (604 bytes): Like hh6d.golden.exe, but it uses NASM library
+* hh7.golden.exe (584 bytes): Like hh6d.golden.exe, but it uses NASM library
   smallpe.inc.nasm, for convenient creation of small arbitrary (i.e. not
   only hello-world) Win32 PE .exe executables using KERNEL32.DLL only.
 * box1.golden.exe (268 bytes): Doesn't work on Windows XP, works on Windows

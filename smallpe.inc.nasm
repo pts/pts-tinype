@@ -1,5 +1,5 @@
 ;
-; smallpe.inc.nasm: small (568 bytes), flexible and ultraportable Win32 PE .exe
+; smallpe.inc.nasm: small (548 bytes), flexible and ultraportable Win32 PE .exe
 ; by pts@fazekas.hu on 2020-07-25
 ;
 ; Compile: nasm -O0 -f bin -o prog.exe prog.nasm
@@ -8,7 +8,7 @@
 ; 10, tested on Windows NT 3.1, Windows 95, Windows XP, Windows 7, Windows 10
 ; and Wine 5.0.
 ;
-; Example prog.exe (568 bytes) which just exits successfully:
+; Example prog.exe (548 bytes) which just exits successfully:
 ;
 ;   %include "smallpe.inc.nasm"
 ;   _start:
@@ -83,7 +83,9 @@ section rodata   align=1 valign=1 follows=peheader vfollows=peheader  ; The user
 _RODATA:
 section text     align=1 valign=1 follows=rodata vstart=__PLEASE_CALL_endpe__  ; The user should populate it with code or data (read, write, execute).
 _TEXT:
-section import   align=1 valign=1 follows=text vfollows=text  ; Contains import descriptor and import address table. The user shouldn't add anthing here.
+section iat      align=1 valign=1 follows=text vfollows=text  ; Contains the import address table. The user shouldn't add anthing here.
+_IAT:
+section import   align=1 valign=1 follows=iat vfollows=iat  ; Contains the import descriptor. Must be directly in front of bss. The user shouldn't add anthing here.
 _IMPORT:
 section bss      align=1 follows=import nobits  ; The user can populate it with uninitialized data (e.g. with resb).
 _BSS:
@@ -174,6 +176,7 @@ IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT:
 IMAGE_DIRECTORY_ENTRY_IAT:  ; Import address table.
 .VirtualAddress: dd IMPORT_ADDRESS_TABLE-__IMAGE_BASE__
 .Size: dd IMPORT_ADDRESS_TABLE_end-IMPORT_ADDRESS_TABLE
+; TODO(pts): Remove more above, like in hh2d.nasm.
 ; These entries are not needed.
 ;IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT:
 ;.VirtualAddress: dd 0
@@ -221,9 +224,12 @@ IMAGE_IMPORT_DESCRIPTOR_0:
 .Name: dd NAME_KERNEL32_DLL-__IMAGE_BASE__
 .FirstThunk: dd IMPORT_ADDRESS_TABLE-__IMAGE_BASE__
 IMAGE_IMPORT_DESCRIPTOR_1:  ; Last Import directory table, marks end-of-list.
-dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
-IMAGE_IMPORT_DESCRIPTORS_end:
+;dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
+IMAGE_IMPORT_DESCRIPTORS_BSS_SIZE equ 4*5  ; For the end-of-list bytes above.
+_IMPORT_end:
+IMAGE_IMPORT_DESCRIPTORS_end equ $+IMAGE_IMPORT_DESCRIPTORS_BSS_SIZE
 
+section iat
 ; Because of the modification, this mustn't start earlier than __RVA_TEXT__
 IMPORT_ADDRESS_TABLE:  ; Import address table. Modified by the PE loader before jumping to __ENTRY__POINT__.
 
@@ -245,7 +251,7 @@ IMPORT_ADDRESS_TABLE:  ; Import address table. Modified by the PE loader before 
 %ifstr %2  ; SUXX: It's also true for 'foo'+4.
 %ifndef %1  ; Extend the import and name sections only once.
 %define %1 %1
-[section import]
+[section iat]
 ; Contribute an entry to IMPORT_ADDRESS_TABLE.
 %1: dd __name__%1-__IMAGE_BASE__
 [section peheader]
@@ -622,11 +628,18 @@ kcall ExitProcess
   _RODATA_end:
   section text
   _TEXT_end:
-  section import
+  section iat
   dd 0  ; Marks end-of-list.
   IMPORT_ADDRESS_TABLE_end:
-  _IMPORT_end:
+  _IAT_end:
+  section import
+  %if $-_IMPORT_end!=0
+  %error 'Please do not add anything to section import.'  ; IMAGE_IMPORT_DESCRIPTORS_end has to precede section bss.
+  %endif
   section bss
+  %if $-_BSS<IMAGE_IMPORT_DESCRIPTORS_BSS_SIZE
+  resb IMAGE_IMPORT_DESCRIPTORS_BSS_SIZE-($-_BSS)
+  %endif
   _BSS_end:
   __RVA_TEXT__ equ 0x1000
   ;__RVA_TEXT__ equ ((__IMAGE_SIZE_UPTO_TEXT__&~0x1ff)+0xfff)&~0xfff
