@@ -85,7 +85,7 @@ MajorSubsystemVersion: dw 3   ; Windows NT 3.1.
 MinorSubsystemVersion: dw 10  ; Windows NT 3.1.
 Win32VersionValue: dd 0
 SizeOfImage: dd VADDR_TEXT+SECTION_TEXT_end-HEADER_end_aligned+BSS_SIZE
-SizeOfHeaders: dd HEADERS_end  ; 0x200, 0x230, 0x400 work on Windows NT 3.1; HEADERS_end; 0x400 doesn't work on Windows NT 3.1.; 0x200 doesn't work on Wine 5.0.; 0x230 and 0x400 don't work on Windows 95.
+SizeOfHeaders: dd HEADERS_end
 CheckSum: dd 0
 Subsystem: dw 3  ; IMAGE_SUBSYSTEM_WINDOWS_CUI; gcc -mconsole
 DllCharacteristics: dw 0
