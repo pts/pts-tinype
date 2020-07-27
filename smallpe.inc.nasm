@@ -656,7 +656,7 @@ kcall ExitProcess
   ; Wine 5.0 doesn't care, but Windows NT 3.1, Windows 95 and Windows XP do.
   %error 'VirtualAddress of section text must be smaller than SizeOfHeader.'
   %endif
-  __IMAGE_SIZE_UPTO_BSS__ equ __VSTART_TEXT__-__IMAGE_BASE__+(_TEXT_end-_TEXT)+(_IMPORT_end-_IMPORT)
+  __IMAGE_SIZE_UPTO_BSS__ equ __VSTART_TEXT__-__IMAGE_BASE__+(_TEXT_end-_TEXT)+(_IAT_end-_IAT)+(_IMPORT_end-_IMPORT)
   __IMAGE_SIZE__ equ __IMAGE_SIZE_UPTO_BSS__+(_BSS_end-_BSS)
   section endpe  ; Keep it going, catch accidental assembly instructions after endpe.
   ; Will cause: warning: attempt to initialize memory in a nobits section: ignored [-w+other]
