@@ -47,7 +47,7 @@ TimeDateStamp: dd 0
 PointerToSymbolTable: dd 0
 NumberOfSymbols: dd 0
 SizeOfOptionalHeader: dw IMAGE_OPTIONAL_HEADER32_end-IMAGE_OPTIONAL_HEADER32
-dw 0x030f
+Characteristics: dw 0x030f
 
 IMAGE_OPTIONAL_HEADER32:
 Magic: dw 0x10b  ; IMAGE_NT_OPTIONAL_HDR32_MAGIC
