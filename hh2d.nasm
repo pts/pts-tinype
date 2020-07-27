@@ -5,8 +5,8 @@
 ; Compile: nasm -O0 -f bin -o hh2d.exe hh2d.nasm
 ;
 ; It doesn't work on Windows NT 3.1 (empty output, even with
-; SubsystemVersion set to 3.10). It works on Wine 5.0, Windows 95 and
-; Windows XP.
+; SubsystemVersion set to 3.10). It works on Wine 5.0, Windows 95, Windows
+; NT 4.0 and Windows XP.
 ;
 ; This file is based on hh6d.nasm. The file offset of the .text section was
 ; adjusted so that the entire file gets loaded.
@@ -132,11 +132,11 @@ IMAGE_SECTION_HEADER__0:
 .Name: db '.text'
 times 8-($-.Name) db 0
 .VirtualSize: dd FILE_end-FILE_HEADER+EXTRA_BSS_SIZE+BSS_SIZE
-.VirtualAddress: dd VADDR_TEXT
+.VirtualAddress: dd VADDR_TEXT  ; Adding +SKIP_PREFIX_SIZE breaks it on Wine 5.0, Windows NT 4.0 etc.
 ; The trick is to add SKIP_PREFIX_SIZE below. The actual value is ignored by
-; Windows 95 and Windows XP, so the entire file will be loaded to
+; Windows NT 4.0, Windows 95 and Windows XP, so the entire file will be loaded to
 ; IMAGE_BASE+VADDR_TEXT. This is exactly what we want. Unfortunately, the trick
-; doesn't work on Windows NT 3.1.
+; doesn't work on Windows NT 3.1, there PointerToRawData must be divisible by 0x200.
 .SizeOfRawData: dd FILE_end-FILE_HEADER-SKIP_PREFIX_SIZE
 .PointerToRawData: dd SKIP_PREFIX_SIZE
 .PointerToRelocations: dd 0
