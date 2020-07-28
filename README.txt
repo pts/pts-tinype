@@ -27,6 +27,7 @@ Size and compatibility matrix:
 size (bytes)         268   402   408   2048  1536  3072  1536  1024  688   584   584
 Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows NT 3.1       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes
+Windows NT 3.5       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows NT 4.0       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows XP           --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
