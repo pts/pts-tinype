@@ -73,6 +73,8 @@ Variants:
   Win32s. It's a GUI application, it uses MessageBox, loading it from
   USER32.DLL with LoadLibraryA. Built with MinGW GCC from a .c
   source and has SubsystemVersion 3.10 for Windows NT 3.1 compatibility.
+  In addition to the .c source, a bit-by-bit identical NASM reimplementation
+  is also available (hh2tgn.nasm).
 * hh3tw.golden.exe (3072 bytes): Works on Windows NT 3.1 ... Windows 10 and
   Win32s. It's a GUI application, it uses MessageBox, loading it from
   USER32.DLL with LoadLibraryA. Built with OpenWatcom V2 owcc from a .c
