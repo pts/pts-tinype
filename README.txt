@@ -60,9 +60,8 @@ Variants:
   SubsystemVersion to 3.10). It employs a trick so that the entire file is
   loaded to section .text, without having to align to it 512 bytes.
 * hh3gf.golden.exe (2048 bytes): Works on Windows NT 3.1 ... Windows 10.
-  Built with MinGW GCC from a .c source, and the SubsystemVersion field in
-  the PE header was changed from 4.0 to 3.10 for Windows NT 3.1
-  compatibility.
+  Built with MinGW GCC from a .c source and has SubsystemVersion 3.10
+  for Windows NT 3.1 compatibility.
 * hh3tf.golden.exe (1536 bytes): Works on Windows NT 3.1 ... Windows 10.
   Built with TCC 0.9.26 from a .c source, and the SubsystemVersion field in
   the PE header was changed from 4.0 to 3.10 for Windows NT 3.1
