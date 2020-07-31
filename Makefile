@@ -21,6 +21,9 @@ hh3t.exe: hh3.c
 hh3w.exe: hh3.c startw.o
 	owcc -I"$(WATCOM)"/h/nt -fno-stack-check -bwin32 -march=i386 -Wl,runtime -Wl,console=3.10 -W -Wall -Wextra -s -Os -fnostdlib -o $@ $< startw.o
 	-chmod 755 $@
+hh3tw.exe: hh3t.c startw.o
+	owcc -I"$(WATCOM)"/h/nt -fno-stack-check -bwin32 -march=i386 -Wl,runtime -Wl,windows=3.10 -W -Wall -Wextra -s -Os -fnostdlib -o $@ $< startw.o
+	-chmod 755 $@
 hh6a.exe: hh6a.nasm
 	nasm -O0 -f bin -o $@ $<
 	-chmod 755 $@
