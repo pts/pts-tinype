@@ -22,18 +22,18 @@ How to run:
 
 Size and compatibility matrix:
 
-                     hh1   hh2   hh2d  hh3gf hh3tf hh3wf hh3tg hh3tw hh6a  hh6b  hh6c  hh6d  hh7
----------------------------------------------------------------------------------------------------
-size (bytes)         268   402   408   2048  1536  3072  3072  3072  1536  1024  688   584   584
-Win32s 1.25a         --    --    --    --    --    bg    yes   yes   --    --    --    --    --
-Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows NT 3.1       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows NT 3.5       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows NT 4.0       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows XP           --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 10 2020-07   --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+                     hh1   hh2   hh2d  hh3gf hh3tf hh3wf hh3tg hh3tw hh4t  hh6a  hh6b  hh6c  hh6d  hh7
+---------------------------------------------------------------------------------------------------------
+size (bytes)         268   402   408   2048  1536  3072  3072  3072  610   1536  1024  688   584   584
+Win32s 1.25a         --    --    --    --    --    bg    yes   yes   yes   --    --    --    --    --
+Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows NT 3.1       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows NT 3.5       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows NT 4.0       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows XP           --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 10 2020-07   --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 
 ``bg'' means that the program runs in the background, and the message it
 prints is not displayed in any window.
@@ -79,6 +79,11 @@ Variants:
   Win32s. It's a GUI application, it uses MessageBox, loading it from
   USER32.DLL with LoadLibraryA. Built with OpenWatcom V2 owcc from a .c
   source and has SubsystemVersion 3.10 for Windows NT 3.1 compatibility.
+* hh4t.golden.exe (610 bytes): It's an optimized NASM reimplementation of
+  hh3tg.exe. It could be optimized further by directly importing user32.dll
+  (instead of with LoadLibraryA. It works on Windows NT 3.1 ... Windows 10
+  and Win32s. It's a GUI application, it uses MessageBox, loading it from
+  USER32.DLL with LoadLibraryA.
 * hh6a.golden.exe (1536 bytes); Same as hh3tf.golden.exe, but reimplmented
   in NASM.
 * hh6b.golden.exe (1024 bytes): Like hh6a.golden.exe, but smaller, because

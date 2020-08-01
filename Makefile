@@ -1,7 +1,7 @@
 .PHONY: all clean
 
 # hh3*.exe are not here, they need a cross-compiler to build.
-all: hh1.exe hh2.exe hh2d.exe hh3tgn.exe hh6a.exe hh6b.exe hh6c.exe hh6d.exe hh7.exe box1.exe
+all: hh1.exe hh2.exe hh2d.exe hh3tgn.exe hh4t.exe hh6a.exe hh6b.exe hh6c.exe hh6d.exe hh7.exe box1.exe
 
 hh1.exe: hh1.nasm
 	nasm -O0 -f bin -o $@ $<
@@ -28,6 +28,9 @@ hh3tg.exe: hh3t.c startw.o
 	i686-w64-mingw32-gcc -m32 -Wl,--subsystem=windows:3.10 -Wl,--dynamicbase -s -Os -fno-ident -fno-stack-protector -fomit-frame-pointer -fno-unwind-tables -fno-asynchronous-unwind-tables -falign-functions=1  -mpreferred-stack-boundary=2 -falign-jumps=1 -falign-loops=1 -nostdlib -nodefaultlibs -nostartfiles -o $@ $< -lkernel32
 	-chmod 755 $@
 hh3tgn.exe: hh3tgn.nasm
+	nasm -O0 -f bin -o $@ $<
+	-chmod 755 $@
+hh4t.exe: hh4t.nasm
 	nasm -O0 -f bin -o $@ $<
 	-chmod 755 $@
 hh6a.exe: hh6a.nasm
