@@ -187,5 +187,7 @@ Loader limitations:
 * SizeOfOptionalHeader must be >= 0x78.
 * SizeOfHeaders must be > 0.
 * Windows 95 needs at least 10 entries in IMAGE_DATA_DIRECTORY.
+* On Win32s, the PE header (ending with the last byte of the last section
+  header) must fit in 0x800 (2048) bytes.
 
 __END__
