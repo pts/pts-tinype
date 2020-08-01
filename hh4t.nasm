@@ -138,6 +138,7 @@ IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT:
 .VirtualAddress: dd 0
 .Size: dd 0
 IMAGE_DIRECTORY_ENTRY_IAT:  ; Import address table.
+; !! Can we set it to 0, and make the header shorter?
 .VirtualAddress: dd IMPORT_ADDRESS_TABLE+(VADDR_IDATA-SECTION_IDATA)
 .Size: dd IMPORT_ADDRESS_TABLE_end-IMPORT_ADDRESS_TABLE
 ;IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT:

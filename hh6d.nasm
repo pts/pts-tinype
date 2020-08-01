@@ -47,6 +47,7 @@ dd IMAGE_NT_HEADERS
 aa $$+0x40
 
 IMAGE_BASE equ 0x00400000  ; Variable.
+;IMAGE_BASE equ 0x10000000  ; Also works on Windows NT 3.1.
 BSS_SIZE EQU 0
 ;HEADER_end_aligned EQU 0x400
 HEADER_end_aligned EQU 0x200
