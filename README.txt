@@ -22,19 +22,19 @@ How to run:
 
 Size and compatibility matrix:
 
-                     hh1   hh2   hh2d  hh3gf hh3tf hh3wf hh3tg hh3tw hh4t  hh6a  hh6b  hh6c  hh6d  hh7
----------------------------------------------------------------------------------------------------------
-size (bytes)         268   402   408   2048  1536  3072  3072  3072  610   1536  1024  688   584   584
-Win32s 1.25a         --    --    --    --    --    bg    yes   yes   yes   --    --    --    --    --
-Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-ReactOS 0.4.14       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows NT 3.1       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows NT 3.5       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows NT 4.0       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows XP           --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-Windows 10 2020-07   --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+                     hh1   hh2   hh2d  hh3gf hh3tf hh3wf hh3tg hh3tw hh4t  hh6a  hh6b  hh6c  hh6d  hh6r  hh7
+---------------------------------------------------------------------------------------------------------------
+size (bytes)         268   402   408   2048  1536  3072  3072  3072  610   1536  1024  688   584   584   584
+Win32s 1.25a         --    --    --    --    --    bg    yes   yes   yes   --    --    --    --    --    --
+Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+ReactOS 0.4.14       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows NT 3.1       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows NT 3.5       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows NT 4.0       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows XP           --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 7            yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+Windows 10 2020-07   --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 
 ``bg'' means that the program runs in the background, and the message it
 prints is not displayed in any window.
@@ -104,6 +104,9 @@ Variants:
   because Windows NT 3.1 and Windows 95 don't support section
   alignment lower than 512 or section starting at file offset 0. See
   hh2.golden.exe for the `-2' hack to make it work on Windows XP and Wine.
+* hh6r.golden.exe (584 bytes): Like hh6d.golden.exe, but with relocation table.
+  It works on the same systems as hh6d.golden.exe, because Win32s doesn't
+  support Win32 console programs.
 * hh7.golden.exe (584 bytes): Like hh6d.golden.exe, but it uses NASM library
   smallpe.inc.nasm, for convenient creation of small arbitrary (i.e. not
   only hello-world) Win32 PE .exe executables using KERNEL32.DLL only.
