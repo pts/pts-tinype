@@ -216,9 +216,6 @@ __imp__ExitProcess@4 dd NAME_ExitProcess+(VADDR_HEADER)
 dd 0  ; Marks end-of-list.
 IMPORT_ADDRESS_TABLE_end:
 
-
-SECTION_TEXT_end:
-
 ; Windows 95 requires this to be part of a section; Windows NT 3.1 and
 ; Windows XP work if this is in the header.
 IMAGE_IMPORT_DESCRIPTORS:
@@ -226,9 +223,11 @@ IMAGE_IMPORT_DESCRIPTOR_0:
 .OriginalFirstThunk: dd IMPORT_ADDRESS_TABLE+(VADDR_TEXT-HEADER_end_aligned)
 .TimeDateStamp: dd 0
 .ForwarderChain: dd 0
-.Name: dd NAME_KERNEL32_DLL+(VADDR_HEADER)  ; !!!
+.Name: dd NAME_KERNEL32_DLL+(VADDR_HEADER)
 .FirstThunk: dd IMPORT_ADDRESS_TABLE+(VADDR_TEXT-HEADER_end_aligned)
 IMAGE_IMPORT_DESCRIPTOR_1:  ; Last Import directory table, marks end-of-list.
 ;dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
 EXTRA_BSS_SIZE equ 4*5  ; For the end-of-list bytes above.
 IMAGE_IMPORT_DESCRIPTORS_end equ $+EXTRA_BSS_SIZE
+
+SECTION_TEXT_end:
