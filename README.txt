@@ -27,6 +27,7 @@ Size and compatibility matrix:
 size (bytes)         268   402   408   2048  1536  3072  3072  3072  610   1536  1024  688   584   584
 Win32s 1.25a         --    --    --    --    --    bg    yes   yes   yes   --    --    --    --    --
 Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
+ReactOS 0.4.14       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows NT 3.1       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows NT 3.5       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
@@ -189,5 +190,8 @@ Loader limitations:
 * Windows 95 needs at least 10 entries in IMAGE_DATA_DIRECTORY.
 * On Win32s, the PE header (ending with the last byte of the last section
   header) must fit in 0x800 (2048) bytes.
+* ReactOS 0.4.14 is picky about the low 12 bits of SizeOfImage,
+  section.VirtualSize and section.SizeOfRawData being too small. Other
+  systems seem to round these up to page boundary.
 
 __END__

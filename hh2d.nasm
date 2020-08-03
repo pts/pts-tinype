@@ -11,6 +11,9 @@
 ; This file is based on hh6d.nasm. The file offset of the .text section was
 ; adjusted so that the entire file gets loaded.
 ;
+; This program doesn't work on ReactOS 0.4.14, even if we reduce
+; SKIP_PREFIX_SIZE to 1 and we make the .exe 1 byte longer.
+;
 
 ; Asserts that we are at offset %1 from the beginning of the input file
 %macro aa 1
