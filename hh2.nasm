@@ -96,10 +96,12 @@ BaseOfData: dd (IMAGE_NT_HEADERS - _filestart)  ; Overlaps with: IMAGE_DOS_HEADE
 ImageBase: dd imagebase
 SectionAlignment: dd 0x1000  ; Minimum value for Windows XP.
 %if file_alignment == 0 || file_alignment & (file_alignment - 1)
-%fatal Invalid file_alignment, must be a power of 2.
+%error Invalid file_alignment, must be a power of 2.
+times -1 nop  ; Force error even in NASM 0.98.39.
 %endif
 %if file_alignment < 0x200
-%fatal Windows XP needs file_alignment >= 0x200
+%error Windows XP needs file_alignment >= 0x200
+times -1 nop  ; Force error even in NASM 0.98.39.
 %endif
 FileAlignment: dd file_alignment  ; Minimum value for Windows XP.
 MajorOperatingSystemVersion: dw 4
@@ -215,20 +217,22 @@ IMAGE_SECTION_HEADER__2:
 .Name: db 'xxxxxxx', 0  ;  Arbitrary ASCIIZ string OK here.  ; db '.text', 0, 0, 0
 .VirtualSize: dd (_eof - _text) + bss_size
 %if (textbase - imagebase) & 0xfff
-%fatal _text doesn't start at page boundary, needed by Windows XP.
+%error _text doesn't start at page boundary, needed by Windows XP.
+times -1 nop  ; Force error even in NASM 0.98.39.
 %endif
 %if (textbase - imagebase) <= 0x2000
-%fatal _text doesn't start later than the previous sections, needed by Windows XP.
+%error _text doesn't start later than the previous sections, needed by Windows XP.
+times -1 nop  ; Force error even in NASM 0.98.39.
 %endif
 .VirtualAddress: dd textbase - imagebase
-.SizeOfRawData: dd _eof - _text - 2 * !(_text - _filestart)
+.SizeOfRawData: dd _eof - _text - 2 ;* !(_text - _filestart)
 ; It's not true that PointerToRawData must be a muliple of file_alignment.
 ; What is true is that Windows XP ignores the low 9 bits
 ; (log2(file_alignment)) of PointerToRawData (except when adding it to
 ; SizeOfRawData), and also loads the preceding few bytes. The reason why we
 ; don't set PointerToRawData here is that if it's 0, then Windows XP doesn't
 ; load anything for this section.
-.PointerToRawData: dd _text - _filestart + 2 * !(_text - _filestart)
+.PointerToRawData: dd _text - _filestart + 2 ;* !(_text - _filestart)
 .PointerToRelocations: dd 0
 .PointerToLineNumbers: dd 0
 .NumberOfRelocations: dw 0
@@ -238,13 +242,15 @@ IMAGE_SECTION_HEADER__2:
 _headers_end:
 ; We can check it only this late, when _headers_end is defined.
 %if (_headers_end - _sechead) % 40 != 0
-%fatal Multiples of IMAGE_SECTION_HEADER needed.
+%error Multiples of IMAGE_SECTION_HEADER needed.
+times -1 nop  ; Force error even in NASM 0.98.39.
 %endif
 %if (_headers_end - _sechead) / 40 < 3
 ; Please note that hh3t.golden.exe has only 2 sections, and it still works
 ; on Windows XP (Tiny Windows XP in QEMU 4.2.0). So it's unclear why this
 ; doesn't work with only 2 sections.
-%fatal Windows XP in this setting needs at least 3 sections.
+%error Windows XP in this setting needs at least 3 sections.
+times -1 nop  ; Force error even in NASM 0.98.39.
 %endif
 
 ;times 0x200 - ($-$$) db 'x'
@@ -321,5 +327,6 @@ _eof:
 bss_size equ 20  ; _idata_end - _eof
 
 %if (_text - _filestart) & (file_alignment - 1)
-%fatal _text is not aligned to file_alignment, needed by Windows XP.
+%error _text is not aligned to file_alignment, needed by Windows XP.
+times -1 nop  ; Force error even in NASM 0.98.39.
 %endif
