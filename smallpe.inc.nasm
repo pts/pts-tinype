@@ -39,7 +39,7 @@
 ;   message_end:
 ;   endpe
 ;
-; Minimum version of NASM needed: 0.99.06 (2007-11-04).
+; Minimum version of NASM needed: 0.98.39 (2005-01-20).
 ;
 ; Call functions in KERNEL32.DLL using the `kcall TheFunctionName' syntax.
 ; Other Win32 DLLs (e.g. USER32.DLL and GDI32.DLL) are not supported
@@ -239,13 +239,13 @@ IMPORT_ADDRESS_TABLE:  ; Import address table. Modified by the PE loader before 
 ; KERNEL32.DLL.
 ;
 ; Usage: kcall 'TheFunctionName'  ; Recommended.
-;   This works in NASM version >= 0.99.06 (released 2007-11-04).
+;   This works in NASM version >= 0.98.39 (released 2005-01-20).
 ; Usage: kcall TheFunctionName
-;   This works in NASM version >= 0.99.06 (released 2007-11-04) for the ~50
+;   This works in NASM version >= 0.98.39 (released 2005-01-20) for the ~50
 ;   most commonly used functions in KERNEL32.DLL, and it works in all
 ;   functions with NASM version >= 2.03 (released 2008-06-10).
 ; Usage: kcall __imp__TheFunctionName, 'TheFunctionName'
-;   This works in NASM version >= 0.99.06 (released 2007-11-04).
+;   This works in NASM version >= 0.98.39 (released 2005-01-20).
 %macro kcall 2
 ; We could use `%iftoken %1' in NASM >= 2.02. We don't bother.
 %ifstr %2  ; SUXX: It's also true for 'foo'+4.

@@ -121,7 +121,7 @@ How to compile:
 
 * On a Unix system (e.g. Linux) with the `nasm' and `make' tools installed,
   just run `make' (without the quotes) in the directory containing hh2.nasm.
-  The minimum NASM version required is 0.99.06.
+  The minimum NASM version required is 0.98.39.
 * Alternatively, on other systems, look at the beginning of the hh6d.nasm
   etc. On Windows, you may have to run `nasmw' instead of `nasm'.
 
