@@ -542,7 +542,7 @@ exit 0
 %endmacro
 %macro exit 1
 %ifnum %1
-%if (%1)&~0xff
+%if (%1)&~0x7f
 push strict dword %1
 %else
 push strict byte %1
