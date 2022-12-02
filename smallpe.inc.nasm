@@ -126,7 +126,7 @@ MajorSubsystemVersion: dw 3   ; Windows NT 3.1.
 MinorSubsystemVersion: dw 10  ; Windows NT 3.1.
 Win32VersionValue: dd 0
 SizeOfImage: dd __IMAGE_SIZE__
-SizeOfHeaders: dd __IMAGE_SIZE_UPTO_TEXT__
+SizeOfHeaders: dd __IMAGE_SIZE_UPTO_TEXT__-(_RODATA_end-_RODATA_before_padding)
 CheckSum: dd 0
 Subsystem: dw 3  ; IMAGE_SUBSYSTEM_WINDOWS_CUI; gcc -mconsole
 DllCharacteristics: dw 0
@@ -621,9 +621,10 @@ kcall ExitProcess
   dd 0  ; Why is this needed? A dw is not enough.
   _PEHEADER_end:
   section rodata
+  _RODATA_before_padding:
   __IMAGE_SIZE_UPTO_TEXT_UNPADDED__ equ (_STUB_end-_STUB)+(_STUBX_end-_STUBX)+(_PEHEADER_end-_PEHEADER)+($-_RODATA)
   %if __IMAGE_SIZE_UPTO_TEXT_UNPADDED__<0x200
-  times 0x200-__IMAGE_SIZE_UPTO_TEXT_UNPADDED__ db 'R'
+  times 0x200-__IMAGE_SIZE_UPTO_TEXT_UNPADDED__ db 'H'
   %endif
   _RODATA_end:
   section text
