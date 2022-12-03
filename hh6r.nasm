@@ -182,18 +182,18 @@ message_end:
 
 ; Without these relocation blocks, Win32s wouldn't be able to run the .exe.
 ; They are ignored by Wine, Windows NT, Windows 95 and Windows XP+.
-RELOC_BLOCKS:
-RELOC_BLOCK__0:
-dd VADDR_TEXT
-dd RELOC_BLOCK__0_end-RELOC_BLOCK__0
+RELOC_BLOCKS:  ; https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#the-reloc-section-image-only
+RELOC_BLOCK__0:  ; Each block must start on a 32-bit boundary.
+dd VADDR_TEXT                             ; dd 0x1000
+dd RELOC_BLOCK__0_end-RELOC_BLOCK__0      ; dd 0x10
 .relocs:
-BASERELOC_HIGHLOW equ 0x3000
-dw reloc0-SECTION_TEXT+BASERELOC_HIGHLOW
-dw reloc1-SECTION_TEXT+BASERELOC_HIGHLOW
-dw reloc2-SECTION_TEXT+BASERELOC_HIGHLOW
-dw reloc3-SECTION_TEXT+BASERELOC_HIGHLOW
+BASERELOC_HIGHLOW equ 0x3000  ; IMAGE_REL_BASED_HIGHLOW (== 3) << 12. The lower 12 bits contain the actual offset where to apply the relocation.
+dw reloc0-SECTION_TEXT+BASERELOC_HIGHLOW  ; dw 0x3004
+dw reloc1-SECTION_TEXT+BASERELOC_HIGHLOW  ; dw 0x3011
+dw reloc2-SECTION_TEXT+BASERELOC_HIGHLOW  ; dw 0x3018
+dw reloc3-SECTION_TEXT+BASERELOC_HIGHLOW  ; dw 0x3020
 %if ($-.relocs)&2  ; !! Is this padding really needed? Which Windows version breaks without it?
-dw 0  ; Padding to even number of relocs.
+dw 0  ; Padding to even number of relocs. IMAGE_REL_BASED_ABSOLUTE to pad a block.
 %endif
 RELOC_BLOCK__0_end:
 RELOC_BLOCKS_end:
