@@ -244,8 +244,12 @@ IMPORT_ADDRESS_TABLE:  ; Import address table. Modified by the PE loader before 
 ;   This works in NASM version >= 0.98.39 (released 2005-01-20) for the ~50
 ;   most commonly used functions in KERNEL32.DLL, and it works in all
 ;   functions with NASM version >= 2.03 (released 2008-06-10).
-; Usage: kcall __imp__TheFunctionName, 'TheFunctionName'
+; Usage: kcall __imp__TheFunctionName@ArgBytes, 'TheFunctionName'
 ;   This works in NASM version >= 0.98.39 (released 2005-01-20).
+;   The actual symbol name (%1) doesn't matter (e.g. GCC, OpenWatcom C
+;   compiler and TCC emit __imp__WriteFile@20), but if you use different names
+;   for the same library function (%2), then the same function name name (%2)
+;   will be emitted multiple times to your .exe.
 %macro kcall 2
 ; We could use `%iftoken %1' in NASM >= 2.02. We don't bother.
 %ifstr %2  ; SUXX: It's also true for 'foo'+4.
