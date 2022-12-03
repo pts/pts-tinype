@@ -463,11 +463,14 @@ deftok_compat %$n, __imp__, %1
 __KCALL2__
 %endmacro
 %else
-; The most common <50 KERNEL32.DLL function calls, including those used by
+; The most common <60 KERNEL32.DLL function calls, including those used by
 ; OpenWatcom V2 with a program containing malloc, printf and strcmp.
 %define __str__CloseHandle 'CloseHandle'
+%define __str__CreateDirectoryA 'CreateDirectoryA'
+%define __str__CreateDirectoryW 'CreateDirectoryW'
 %define __str__CreateEventA 'CreateEventA'
 %define __str__CreateFileA 'CreateFileA'
+%define __str__DeleteFileA 'DeleteFileA'
 %define __str__ExitProcess 'ExitProcess'
 %define __str__FlushFileBuffers 'FlushFileBuffers'
 %define __str__GetACP 'GetACP'
@@ -475,12 +478,13 @@ __KCALL2__
 %define __str__GetCommandLineA 'GetCommandLineA'
 %define __str__GetCommandLineW 'GetCommandLineW'
 %define __str__GetConsoleMode 'GetConsoleMode'
+%define __str__GetCurrentProcessId 'GetCurrentProcessId'
 %define __str__GetCurrentThreadId 'GetCurrentThreadId'
 %define __str__GetEnvironmentStrings 'GetEnvironmentStrings'
 %define __str__GetEnvironmentStringsA 'GetEnvironmentStringsA'
 %define __str__GetEnvironmentStringsW 'GetEnvironmentStringsW'
 %define __str__GetEnvironmentVariableA 'GetEnvironmentVariableA'
-%define __str__GetEnvironmentVariableW 'GetEnvironmentVariableW'
+%define __str__GetEnvironmentVariableW 'GetEnvironmentVariableW'  ; Not implemented in WDOSX.
 %define __str__GetFileType 'GetFileType'
 %define __str__GetLastError 'GetLastError'
 %define __str__GetLocalTime 'GetLocalTime'
@@ -489,15 +493,24 @@ __KCALL2__
 %define __str__GetModuleHandleA 'GetModuleHandleA'
 %define __str__GetOEMCP 'GetOEMCP'
 %define __str__GetProcAddress 'GetProcAddress'
+%define __str__GetProcessHeap 'GetProcessHeap'
 %define __str__GetStdHandle 'GetStdHandle'
 %define __str__GetTimeZoneInformation 'GetTimeZoneInformation'
 %define __str__GetVersion 'GetVersion'
+%define __str__HeapAlloc 'HeapAlloc'
 %define __str__LoadLibraryA 'LoadLibraryA'
+%define __str__LoadLibraryExA 'LoadLibraryExA'
+%define __str__MoveFileA 'MoveFileA'
+%define __str__MoveFileExA 'MoveFileExA'  ; Not implemented in WDOSX.
 %define __str__MultiByteToWideChar 'MultiByteToWideChar'
 %define __str__ReadConsoleInputA 'ReadConsoleInputA'
 %define __str__ReadFile 'ReadFile'
+%define __str__RemoveDirectoryA 'RemoveDirectoryA'
+%define __str__RemoveDirectoryW 'RemoveDirectoryW'
 %define __str__SetConsoleCtrlHandler 'SetConsoleCtrlHandler'
 %define __str__SetConsoleMode 'SetConsoleMode'
+%define __str__SetCurrentDirectoryA 'SetCurrentDirectoryA'
+%define __str__SetCurrentDirectoryW 'SetCurrentDirectoryW'
 %define __str__SetEnvironmentVariableA 'SetEnvironmentVariableA'
 %define __str__SetFilePointer 'SetFilePointer'
 %define __str__SetStdHandle 'SetStdHandle'
@@ -509,6 +522,41 @@ __KCALL2__
 %define __str__WideCharToMultiByte 'WideCharToMultiByte'
 %define __str__WriteConsoleA 'WriteConsoleA'
 %define __str__WriteFile 'WriteFile'
+
+; Other KERNEL32.DLL functions implemented by WDOSX:
+;
+; AreFileApisANSI Borland32 CompareFileTime CompareStringA CompareStringW
+; CopyFileA CreateDirectoryW CreateFileW CreateProcessA DebugBreak
+; DeleteCriticalSection DeleteFileA DeleteFileW DosDateTimeToFileTime
+; DuplicateHandle EnterCriticalSection EnumCalendarInfoA FileTimeToDosDateTime
+; FileTimeToLocalFileTime FileTimeToSystemTime FindClose FindFirstFileA
+; FindNextFileA FindResourceA FormatMessageA FreeEnvironmentStringsA
+; FreeEnvironmentStringsW FreeLibrary FreeResource GetConsoleCP
+; GetConsoleOutputCP GetCurrentDirectoryA GetCurrentProcess
+; GetCurrentProcessId GetCurrentThread GetCurrentTime GetDateFormatA
+; GetDiskFreeSpaceA GetDriveTypeA GetExitCodeProcess GetFileAttributesA
+; GetFileAttributesW GetFileInformationByHandle GetFileSize GetFileTime
+; GetFullPathNameA GetLocaleInfoA GetLogicalDriveStringsA GetLogicalDrives
+; GetPrivateProfileStringA GetShortPathNameA GetStartupInfoA
+; GetStringTypeA GetStringTypeW GetSystemDefaultLCID GetSystemDefaultLangID
+; GetSystemInfo GetSystemTime GetSystemTimeAsFileTime GetTempFileNameA
+; GetThreadLocale GetTickCount GetUserDefaultLCID GetVersionExA GetVersionExW
+; GetVolumeInformationA GlobalAlloc GlobalFlags GlobalFree GlobalHandle
+; GlobalLock GlobalMemoryStatus GlobalReAlloc GlobalSize GlobalUnlock
+; HeapCreate HeapDestroy HeapFree HeapReAlloc HeapSize
+; InitializeCriticalSection InterlockedDecrement InterlockedExchange
+; InterlockedIncrement IsBadCodePtr IsBadHugeReadPtr IsBadHugeWritePtr
+; IsBadReadPtr IsBadWritePtr IsDBCSLeadByteEx LCMapStringA LCMapStringW
+; LeaveCriticalSection LoadResource LocalAlloc LocalFileTimeToFileTime
+; LocalFree LocalReAlloc LockFile LockResource OutputDebugString
+; QueryPerformanceCounter QueryPerformanceFrequency RaiseException
+; ReadProcessMemory RtlFillMemory RtlMoveMemory RtlUnwind RtlZeroMemory
+; SetEndOfFile SetEnvironmentVariableW SetFileApisToOEM SetFileAttributesA
+; SetFileAttributesW SetFileTime SetHandleCount SetLastError SizeofResource
+; SystemTimeToFileTime TerminateProcess TlsAlloc TlsFree TlsGetValue
+; TlsSetValue UnlockFile VirtualProtect WritePrivateProfileStringA
+; WriteProcessMemory
+
 %macro kcall 1
 %push kcall
 %undef __KCALL2__
