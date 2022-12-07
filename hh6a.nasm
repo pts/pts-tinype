@@ -226,10 +226,15 @@ IMAGE_IMPORT_DESCRIPTOR_0:
 .ForwarderChain: dd 0
 .Name: dd NAME_KERNEL32_DLL+(VADDR_DATA-SECTION_DATA)
 .FirstThunk: dd IMPORT_ADDRESS_TABLE+(VADDR_DATA-SECTION_DATA)
-dd 0, 0, 0, 0, 0  ; !! Why is this padding needed?
+IMAGE_IMPORT_DESCRIPTOR_1:  ; Last Import directory table, marks end-of-list.
+dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
+IMAGE_IMPORT_DESCRIPTOR_2:
+dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s. For Windows 95 HeapAlloc(...) compatibility.
+IMAGE_IMPORT_DESCRIPTOR_3:
+dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s. For Windows 95 after-boot compatibility.
 IMAGE_IMPORT_DESCRIPTORS_end:
 
-aa $$+0x0438
+aa $$+0x0438+40
 IMPORT_ADDRESS_TABLE:  ; Import address table. Modified by the PE loader before jumping to _entry.
 __imp__GetStdHandle@4: dd NAME_GetStdHandle+(VADDR_DATA-SECTION_DATA)
 __imp__WriteFile@20: dd NAME_WriteFile+(VADDR_DATA-SECTION_DATA)
@@ -237,23 +242,23 @@ __imp__ExitProcess@4 dd NAME_ExitProcess+(VADDR_DATA-SECTION_DATA)
 dd 0  ; Marks end-of-list.
 IMPORT_ADDRESS_TABLE_end:
 
-aa $$+0x0448
+aa $$+0x0448+40
 IMPORTED_SYMBOL_NAMES:
 ; !! To make it smaller, reuse IMPORT_ADDRESS_TABLE for this.
 dd NAME_GetStdHandle+(VADDR_DATA-SECTION_DATA)
 dd NAME_WriteFile+(VADDR_DATA-SECTION_DATA)
 dd NAME_ExitProcess+(VADDR_DATA-SECTION_DATA)
 dd 0  ; Marks end-of-list.
-aa $$+0x0458
+aa $$+0x0458+40
 NAME_KERNEL32_DLL: db 'kernel32.dll', 0
-aa $$+0x0465
+aa $$+0x0465+40
 ; The `0, 0, ' is the .Hint.
 NAME_GetStdHandle: db 0, 0, 'GetStdHandle', 0
 NAME_WriteFile: db 0, 0, 'WriteFile', 0
 NAME_ExitProcess: db 0, 0, 'ExitProcess', 0
 dd 0  ; Why is this needed? A dw is not enough.
 times ($$-$)&15 db 0
-aa $$+0x04a0
+aa $$+0x04a0+32
 SECTION_DATA_end:
 times ($$-$)&511 db 0
 SECTION_DATA_end_aligned:

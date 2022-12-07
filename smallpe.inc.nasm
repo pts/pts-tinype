@@ -225,9 +225,13 @@ IMAGE_IMPORT_DESCRIPTOR_0:
 .FirstThunk: dd IMPORT_ADDRESS_TABLE-__IMAGE_BASE__
 IMAGE_IMPORT_DESCRIPTOR_1:  ; Last Import directory table, marks end-of-list.
 ;dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
-IMAGE_IMPORT_DESCRIPTORS_BSS_SIZE equ 4*5  ; For the end-of-list bytes above.
+; For the end-of-list bytes above + one more all-0 descriptor, for
+; Windows 95 4.00.950 C HeapAlloc(...) and after-boot compatibility.
+IMAGE_IMPORT_DESCRIPTORS_BSS_SIZE equ (4*5)*3
 _IMPORT_end:
 IMAGE_IMPORT_DESCRIPTORS_end equ $+IMAGE_IMPORT_DESCRIPTORS_BSS_SIZE
+section bss
+resb IMAGE_IMPORT_DESCRIPTORS_BSS_SIZE
 
 section iat
 ; Because of the modification, this mustn't start earlier than __RVA_TEXT__
@@ -690,9 +694,6 @@ kcall ExitProcess
   %error 'Please do not add anything to section import.'  ; IMAGE_IMPORT_DESCRIPTORS_end has to precede section bss.
   %endif
   section bss
-  %if $-_BSS<IMAGE_IMPORT_DESCRIPTORS_BSS_SIZE
-  resb IMAGE_IMPORT_DESCRIPTORS_BSS_SIZE-($-_BSS)
-  %endif
   _BSS_end:
   __RVA_TEXT__ equ 0x1000
   ;__RVA_TEXT__ equ ((__IMAGE_SIZE_UPTO_TEXT__&~0x1ff)+0xfff)&~0xfff

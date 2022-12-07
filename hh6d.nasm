@@ -156,7 +156,7 @@ times ($$-$)&7 db 0
 .VirtualSize: dd SECTION_TEXT_end-HEADER_end_aligned+EXTRA_BSS_SIZE+BSS_SIZE
 VADDR_TEXT equ 0x1000
 .VirtualAddress: dd VADDR_TEXT
-.SizeOfRawData: dd SECTION_TEXT_end-HEADER_end_aligned
+.SizeOfRawData: dd SECTION_TEXT_end-HEADER_end_aligned+EXTRA_BSS_SIZE+BSS_SIZE
 .PointerToRawData: dd HEADER_end_aligned
 .PointerToRelocations: dd 0
 .PointerToLineNumbers: dd 0
@@ -227,7 +227,9 @@ IMAGE_IMPORT_DESCRIPTOR_0:
 .FirstThunk: dd IMPORT_ADDRESS_TABLE+(VADDR_TEXT-HEADER_end_aligned)
 IMAGE_IMPORT_DESCRIPTOR_1:  ; Last Import directory table, marks end-of-list.
 ;dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
-EXTRA_BSS_SIZE equ 4*5  ; For the end-of-list bytes above.
+; For the end-of-list bytes above + one more all-0 descriptor, for
+; Windows 95 4.00.950 C HeapAlloc(...) and after-boot compatibility.
+EXTRA_BSS_SIZE equ (4*5)*3
 IMAGE_IMPORT_DESCRIPTORS_end equ $+EXTRA_BSS_SIZE
 
 SECTION_TEXT_end:

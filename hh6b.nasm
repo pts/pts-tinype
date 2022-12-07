@@ -214,6 +214,10 @@ IMAGE_IMPORT_DESCRIPTOR_0:  ; Import directory table.
 .FirstThunk: dd IMPORT_ADDRESS_TABLE+(VADDR_TEXT-SECTION_TEXT)
 IMAGE_IMPORT_DESCRIPTOR_1:  ; Last Import directory table, marks end-of-list.
 dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s.
+IMAGE_IMPORT_DESCRIPTOR_2:
+dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s. For Windows 95 4.00.950 C HeapAlloc(...) compatibility.
+IMAGE_IMPORT_DESCRIPTOR_3:
+dd 0, 0, 0, 0, 0  ; Same fields as above, filled with 0s. For Windows 95 4.00.950 C after-boot compatibility.
 IMAGE_IMPORT_DESCRIPTORS_end:
 
 IMPORT_ADDRESS_TABLE:  ; Import address table. Modified by the PE loader before jumping to _entry.
