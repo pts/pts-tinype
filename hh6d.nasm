@@ -1,22 +1,30 @@
 ;
 ; hh6d.nasm: small (584 bytes) and ultraportable Win32 PE .exe
-; by pts@fazekas.hu on 2020-07-25
+; by pts@fazekas.hu at Mon Jun 23 15:28:47 CEST 2025
 ;
 ; Compile: nasm -O0 -f bin -o hh6d.exe hh6d.nasm
 ;
-; It works on Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows
-; 95, Windows XP, Windows 7, Windows 10 and Wine 5.0.
+; It works on Windows NT 3.1--Windows 11, tested on Windows NT 3.1, Windows
+; 95, Windows XP, Windows 7, Windows 11 and Wine 5.0.
 ;
 ; This file is based on hh6c.nasm. Some padding bytes and some image data
 ; directory entried were removed, and some read-only data has been moved
 ; from the .text section to the header.
 ;
-
-; Asserts that we are at offset %1 from the beginning of the input file
-%macro aa 1
-times $-(%1) times 0 nop
-times (%1)-$ times 0 nop
-%endmacro
+; On 2025-06-24:
+;
+; https://www.virustotal.com/gui/file/749b1787fc3d12ad2fde50de6832fc2e391570db61d41c1370482d63d87dc48f?nocache=1
+; Arctic Wolf: Unsafe
+; Avira (no cloud): TR/Patched.Ren.Gen
+; Cynet: Malicious (score: 99)
+; DeepInstinct: MALICIOUS
+; Microsoft: Trojan:Win32/Wacatac.B!ml
+; Rising: Trojan.Kryptik@AI.97 (RDML:cdyubupNjiY/orS7kHNqDw)
+; Sophos: Generic ML PUA (PUA)
+; Trapmine: Malicious.high.ml.score
+; WithSecure: Trojan.TR/Patched.Ren.Gen
+; Acronis (Static ML): Undetected
+;
 
 bits 32
 cpu 386
@@ -24,13 +32,11 @@ cpu 386
 VADDR_HEADER equ 0
 FILE_HEADER:
 IMAGE_DOS_HEADER:
-aa $$+0x0000
 ; https://github.com/pts/pts-nasm-fullprog/blob/master/pe_stub1.nasm
 .mz_signature: dw 'MZ'
 .image_size_lo: dw IMAGE_NT_HEADERS
 .image_size_hi: dw 1
 dw 0, 1, 0x0fff, -1, 1, -1, 0, 8, 0
-aa $$+24
 .stub_start:
 push ss
 pop ds
@@ -44,7 +50,6 @@ int 0x21
 .stub_msg: db 'Not a DOS program.', 13, 10, '$'
 times 60-($-$$) db 0
 dd IMAGE_NT_HEADERS
-aa $$+0x40
 
 IMAGE_BASE equ 0x00400000  ; Variable.
 ;IMAGE_BASE equ 0x10000000  ; Also works on Windows NT 3.1.
@@ -119,6 +124,7 @@ IMAGE_DIRECTORY_ENTRY_EXCEPTION:  ; 3.
 IMAGE_DIRECTORY_ENTRY_SECURITY:  ; 4.
 .VirtualAddress: dd 0
 .Size: dd 0
+%if 0  ; Windows 95 needs >=5. Windows NT 3.1, Windows NT 4.0 and Windows XP neesd >=5 or less. Wine 5.0 needs >=2. WDOSX needs >=6 because it needs relocations in IMAGE_DIRECTORY_ENTRY_BASERELOC.
 IMAGE_DIRECTORY_ENTRY_BASERELOC:  ; 5. Base relocation directory.
 .VirtualAddress: dd 0
 .Size: dd 0
@@ -143,17 +149,16 @@ IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT:  ; 11.
 IMAGE_DIRECTORY_ENTRY_IAT:  ; 12. Import address table. Omitted by OpenWatcom wlink(1).
 .VirtualAddress: dd IMPORT_ADDRESS_TABLE+(VADDR_TEXT-HEADER_end_aligned)
 .Size: dd IMPORT_ADDRESS_TABLE_end-IMPORT_ADDRESS_TABLE
-; These entries are not needed.
-;IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT:  ; 13.
-;.VirtualAddress: dd 0
-;.Size: dd 0
-;IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR:  ; 14. Nonzero for .NET .exe.
-;.VirtualAddress: dd 0
-;.Size: dd 0
-;IMAGE_DIRECTORY_ENTRY_RESERVED:  ; 15.
-;.VirtualAddress: dd 0
-;.Size: dd 0
-
+IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT:  ; 13.
+.VirtualAddress: dd 0
+.Size: dd 0
+IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR:  ; 14. Nonzero for .NET .exe.
+.VirtualAddress: dd 0
+.Size: dd 0
+IMAGE_DIRECTORY_ENTRY_RESERVED:  ; 15.
+.VirtualAddress: dd 0
+.Size: dd 0
+%endif
 IMAGE_DATA_DIRECTORY_end:
 IMAGE_OPTIONAL_HEADER32_end:
 

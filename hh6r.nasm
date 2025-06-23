@@ -7,7 +7,23 @@
 ; It works on Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows
 ; 95, Windows XP, Windows 7, Windows 10, Wine 5.0 and ReactOS 0.4.14.
 ;
-; This file is based on hh6r.nasm, and relocations were added.
+; This file is based on hh6d.nasm, and relocations were added.
+;
+; On 2025-06-24:
+;
+; https://www.virustotal.com/gui/file/d6c53a4ac32841b2293cb51c371e1775d596fb8649ca83a9d0bd66d8161f844e?nocache=1
+; Arctic Wolf: Unsafe
+; Avira (no cloud): TR/Patched.Ren.Gen
+; Cynet: Malicious (score: 99)
+; DeepInstinct: MALICIOUS
+; Elastic: Malicious (moderate Confidence)
+; Google: Detected
+; Microsoft: Trojan:Win32/Wacatac.B!ml
+; Rising: Trojan.Kryptik@AI.96 (RDML:14uBNpYiYUAV6s8jTsAdzw)
+; Sophos: Mal/EncPk-ABO
+; Trapmine: Malicious.high.ml.score
+; WithSecure: Trojan.TR/Patched.Ren.Gen
+; ZoneAlarm by Check Point: Mal/EncPk-ABO
 ;
 
 ; Asserts that we are at offset %1 from the beginning of the input file
@@ -124,6 +140,7 @@ IMAGE_DIRECTORY_ENTRY_BASERELOC:  ; 5. Base relocation directory.
 IMAGE_DIRECTORY_ENTRY_DEBUG:  ; 6.
 .VirtualAddress: dd 0
 .Size: dd 0
+%if 0  ; Windows XP needs >=7 if relocations are present. Windows 95, Windows NT 3.1, Windows NT 4.0 and WDOSX need >=6 (the minimum for IMAGE_DIRECTORY_ENTRY_BASERELOC).
 IMAGE_DIRECTORY_ENTRY_ARCHITECTURE:  ; 7.
 .VirtualAddress: dd 0
 .Size: dd 0
@@ -143,16 +160,16 @@ IMAGE_DIRECTORY_ENTRY_IAT:  ; 12. Import address table. Omitted by OpenWatcom wl
 .VirtualAddress: dd IMPORT_ADDRESS_TABLE+(VADDR_TEXT-HEADER_end_aligned)
 .Size: dd IMPORT_ADDRESS_TABLE_end-IMPORT_ADDRESS_TABLE
 ; These entries are not needed.
-;IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT:  ; 13.
-;.VirtualAddress: dd 0
-;.Size: dd 0
-;IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR:  ; 14. Nonzero for .NET .exe.
-;.VirtualAddress: dd 0
-;.Size: dd 0
-;IMAGE_DIRECTORY_ENTRY_RESERVED:  ; 15.
-;.VirtualAddress: dd 0
-;.Size: dd 0
-
+IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT:  ; 13.
+.VirtualAddress: dd 0
+.Size: dd 0
+IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR:  ; 14. Nonzero for .NET .exe.
+.VirtualAddress: dd 0
+.Size: dd 0
+IMAGE_DIRECTORY_ENTRY_RESERVED:  ; 15.
+.VirtualAddress: dd 0
+.Size: dd 0
+%endif
 IMAGE_DATA_DIRECTORY_end:
 IMAGE_OPTIONAL_HEADER32_end:
 

@@ -197,6 +197,18 @@ Loader limitations:
 * ReactOS 0.4.14 is picky about the low 12 bits of SizeOfImage,
   section.VirtualSize and section.SizeOfRawData being too small. Other
   systems seem to round these up to page boundary.
+* Imported symbols (i.e. function names) and DLL names don't have to be
+  word-aligned, even though OpenWatcom wlink(1) adds NUL bytes for word
+  alignment.
+* WDOSX doesn't work if there are no relocations (i.e. the
+  IMAGE_FILE_RELOCS_STRIPPED must be 0 and the
+  IMAGE_DIRECTORY_ENTRY_BASERELOC must be present), thus the minimum
+  number of entries in the image directory for WDOSX is 6.
+* The minimum number of entries in the image directory if relocations are
+  not present is 5 for Windows 95 (and many others).
+* The minimum number of entries in the image directory if relocations are
+  present is 7 for Windows XP and 6 for many others. 6 is the bare minimum
+  because IMAGE_DIRECTORY_ENTRY_BASERELOC must be present.
 * There are some others, not mentioned here.
 
 Virus declaration: According to VirusTotal (https://www.virtustotal.com/),

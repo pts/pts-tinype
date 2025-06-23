@@ -112,6 +112,7 @@ IMAGE_DIRECTORY_ENTRY_EXCEPTION:  ; 3.
 IMAGE_DIRECTORY_ENTRY_SECURITY:  ; 4.
 .VirtualAddress: dd 0
 .Size: dd 0
+%if 0  ; Windows 95 needs >=5. Windows NT 3.1, Windows NT 4.0 and Windows XP neesd >=5 or less. Wine 5.0 needs >=2. WDOSX needs >=6 because it needs relocations in IMAGE_DIRECTORY_ENTRY_BASERELOC.
 IMAGE_DIRECTORY_ENTRY_BASERELOC:  ; 5. Base relocation directory.
 .VirtualAddress: dd 0
 .Size: dd 0
@@ -145,7 +146,7 @@ IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR:  ; 14. Nonzero for .NET .exe.
 IMAGE_DIRECTORY_ENTRY_RESERVED:  ; 15.
 .VirtualAddress: dd 0
 .Size: dd 0
-
+%endif
 IMAGE_DATA_DIRECTORY_end:
 IMAGE_OPTIONAL_HEADER32_end:
 
