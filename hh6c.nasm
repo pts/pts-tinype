@@ -219,8 +219,14 @@ __imp__ExitProcess@4 dd NAME_ExitProcess+(VADDR_TEXT-SECTION_TEXT)
 dd 0  ; Marks end-of-list.
 IMPORT_ADDRESS_TABLE_end:
 
-%define NAME_ODD  0     ; Names with an odd  length must be terminated by 1 NUL,  to make the full name even size.
-%define NAME_EVEN 0, 0  ; Names with an even length must be terminated by 2 NULs, to make the full name even size.
+%define NAME_ODD  0  ; Names with an odd  length are terminated by 1 NUL, to make the full name even size.
+; OpenWatcom wlink(1) would add an extra 0 for names with an even length, to
+; enforce even name alignment. But that's not needed, so we don't add it.
+%if 1
+  %define NAME_EVEN 0  ; Names with an even length are also terminated by 1 NUL, not making the full name even size.
+%else
+  %define NAME_EVEN 0, 0  ; Names with an even length are terminated by 2 NULs, to make the full name even size.
+%endif
 NAME_KERNEL32_DLL: db 'kernel32.dll', NAME_EVEN
 ; The `0, 0, ' is the .Hint.
 NAME_GetStdHandle: db 0, 0, 'GetStdHandle', NAME_EVEN
