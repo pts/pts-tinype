@@ -59,7 +59,16 @@ TimeDateStamp:
 ;db 'xxxxxxxxxxxx'
 .Name: db 'ExitProcess', 0
 SizeOfOptionalHeader: dw _datadir_end - _opthd
-Characteristics: dw 2
+IMAGE_FILE_RELOCS_STRIPPED equ 1
+IMAGE_FILE_EXECUTABLE_IMAGE equ 2
+IMAGE_FILE_LINE_NUMS_STRIPPED equ 4
+IMAGE_FILE_LOCAL_SYMS_STRIPPED equ 8
+IMAGE_FILE_BYTES_REVERSED_LO equ 0x80  ; Deprecated, shouldn't be specified.
+IMAGE_FILE_32BIT_MACHINE equ 0x100
+IMAGE_FILE_DEBUG_STRIPPED equ 0x200
+IMAGE_FILE_DLL equ 0x2000  ; Shouldn't be specified for .exe.
+Characteristics: dw IMAGE_FILE_EXECUTABLE_IMAGE
+
 _opthd:
 IMAGE_OPTIONAL_HEADER32:
 Magic: dw 0x10b  ; IMAGE_NT_OPTIONAL_HDR32_MAGIC

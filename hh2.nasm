@@ -81,7 +81,16 @@ TimeDateStamp: dd 0x00000000
 PointerToSymbolTable: dd 0x00000000
 NumberOfSymbols: dd 0x00000000
 SizeOfOptionalHeader: dw _datadir_end - _opthd  ; Windows XP needs >= 0x78.
-Characteristics: dw 0x030f
+IMAGE_FILE_RELOCS_STRIPPED equ 1
+IMAGE_FILE_EXECUTABLE_IMAGE equ 2
+IMAGE_FILE_LINE_NUMS_STRIPPED equ 4
+IMAGE_FILE_LOCAL_SYMS_STRIPPED equ 8
+IMAGE_FILE_BYTES_REVERSED_LO equ 0x80  ; Deprecated, shouldn't be specified.
+IMAGE_FILE_32BIT_MACHINE equ 0x100
+IMAGE_FILE_DEBUG_STRIPPED equ 0x200
+IMAGE_FILE_DLL equ 0x2000  ; Shouldn't be specified for .exe.
+Characteristics: dw IMAGE_FILE_RELOCS_STRIPPED|IMAGE_FILE_EXECUTABLE_IMAGE|IMAGE_FILE_LINE_NUMS_STRIPPED|IMAGE_FILE_LOCAL_SYMS_STRIPPED|IMAGE_FILE_32BIT_MACHINE|IMAGE_FILE_DEBUG_STRIPPED
+
 _opthd:
 IMAGE_OPTIONAL_HEADER32:
 Magic: dw 0x10b  ; IMAGE_NT_OPTIONAL_HDR32_MAGIC
@@ -188,6 +197,13 @@ _datadir_end:
 
 _sechead:
 
+IMAGE_SCN_CNT_CODE equ 0x20
+IMAGE_SCN_MEM_EXECUTE equ 0x20000000
+IMAGE_SCN_MEM_READ equ 0x40000000
+IMAGE_SCN_CNT_INITIALIZED_DATA equ 0x40
+IMAGE_SCN_MEM_WRITE equ 0x80000000
+IMAGE_SCN_ALIGN_4BYTES equ 0x00300000
+
 IMAGE_SECTION_HEADER__0:
 ;.Name: db 'xxxxxxx', 0  ; Arbitrary ASCIIZ string OK here.  ; db '.dummy1', 0
 .Name: db 'Handle', 0, 0  ; Pad to 16 bytes, to the end of .Name.
@@ -199,7 +215,7 @@ IMAGE_SECTION_HEADER__0:
 .PointerToLineNumbers: dd 0
 .NumberOfRelocations: dw 0
 .NumberOfLineNumbers: dw 0
-.Characteristics: dd 0xc0300040
+.Characteristics: dd IMAGE_SCN_ALIGN_4BYTES|IMAGE_SCN_MEM_READ|IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_MEM_WRITE
 
 IMAGE_SECTION_HEADER__1:
 .Name: db 'xxxxxxx', 0  ;  Arbitaray ASCIIZ string OK here.  ; db '.dummy2', 0
@@ -211,7 +227,7 @@ IMAGE_SECTION_HEADER__1:
 .PointerToLineNumbers: dd 0
 .NumberOfRelocations: dw 0
 .NumberOfLineNumbers: dw 0
-.Characteristics: dd 0xc0300040
+.Characteristics: dd IMAGE_SCN_ALIGN_4BYTES|IMAGE_SCN_MEM_WRITE|IMAGE_SCN_MEM_READ|IMAGE_SCN_CNT_INITIALIZED_DATA
 
 IMAGE_SECTION_HEADER__2:
 .Name: db 'xxxxxxx', 0  ;  Arbitrary ASCIIZ string OK here.  ; db '.text', 0, 0, 0
@@ -237,7 +253,7 @@ times -1 nop  ; Force error even in NASM 0.98.39.
 .PointerToLineNumbers: dd 0
 .NumberOfRelocations: dw 0
 .NumberOfLineNumbers: dw 0
-.Characteristics: dd 0xe0300020
+.Characteristics: dd IMAGE_SCN_ALIGN_4BYTES|IMAGE_SCN_CNT_CODE|IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ|IMAGE_SCN_MEM_WRITE
 
 _headers_end:
 ; We can check it only this late, when _headers_end is defined.
