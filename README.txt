@@ -27,7 +27,7 @@ Size and compatibility matrix:
 size (bytes)         268   402   408   2048  1536  3072  3072  3072  610   1536  1024  713   584   584   584
 Win32s 1.25a         --    --    --    --    --    bg    yes   yes   yes   --    --    --    --    --    --
 Wine 5.0, 1.6.2      yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
-ReactOS 0.4.14       --    --    --    yes   yes   yes   yes   yes   yes   yes   no    yes   yes   yes   yes
+ReactOS 0.4.14       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows NT 3.1       --    --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows NT 3.5       --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
 Windows 95           --    --    yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes   yes
