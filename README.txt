@@ -190,11 +190,17 @@ Loader limitations:
   must start on a file offset divisible by 4.
 * SizeOfOptionalHeader must be >= 0x78.
 * SizeOfHeaders must be > 0.
-* Windows 95 needs at least 10 entries in IMAGE_DATA_DIRECTORY.
+* Windows 95 needs at least 5 entries in IMAGE_DATA_DIRECTORY.
 * On Win32s, the PE header (ending with the last byte of the last section
   header) must fit in 0x800 (2048) bytes.
 * ReactOS 0.4.14 is picky about the low 12 bits of SizeOfImage,
   section.VirtualSize and section.SizeOfRawData being too small. Other
   systems seem to round these up to page boundary.
+* There are some others, not mentioned here.
+
+Virus declaration: According to VirusTotal (https://www.virtustotal.com/),
+some antivirus software claim that these files (hh*.exe) contain virus or
+malware. All of these reports are wrong. These files don't contain any
+malware. I wrote each byte of them, and I haven't added any malware.
 
 __END__
