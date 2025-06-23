@@ -216,7 +216,7 @@ IMPORT_ADDRESS_TABLE:  ; Import address table. Modified by the PE loader before 
 __imp__GetStdHandle@4: dd NAME_GetStdHandle+(VADDR_TEXT-SECTION_TEXT)
 __imp__WriteFile@20: dd NAME_WriteFile+(VADDR_TEXT-SECTION_TEXT)
 __imp__ExitProcess@4 dd NAME_ExitProcess+(VADDR_TEXT-SECTION_TEXT)
-dd 0  ; Marks end-of-list.
+dd 0  ; Terminator needed after the function pointers in IMPORT_ADDRESS_TABLE by Windows 95, Windows NT 3.1, Windows NT 4.0, Windows XP, WDOSX and possibly others. Wine 5.0 doesn't need it.
 IMPORT_ADDRESS_TABLE_end:
 
 %define NAME_ODD  0  ; Names with an odd  length are terminated by 1 NUL, to make the full name even size.

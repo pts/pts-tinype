@@ -700,7 +700,7 @@ kcall ExitProcess
   section text
   _TEXT_end:
   section iat
-  dd 0  ; Marks end-of-list.
+  dd 0  ; Terminator needed after the function pointers in IMPORT_ADDRESS_TABLE by Windows 95, Windows NT 3.1, Windows NT 4.0, Windows XP, WDOSX and possibly others. Wine 5.0 doesn't need it.
   IMPORT_ADDRESS_TABLE_end:
   _IAT_end:
   section import
