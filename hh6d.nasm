@@ -191,7 +191,6 @@ NAME_KERNEL32_DLL: db 'kernel32.dll', NAME_EVEN
 NAME_GetStdHandle: db 0, 0, 'GetStdHandle', NAME_EVEN
 NAME_WriteFile: db 0, 0, 'WriteFile', NAME_ODD
 NAME_ExitProcess: db 0, 0, 'ExitProcess', NAME_ODD
-dd 0  ; !!! Why is this needed? Why can't it be omitted? A dw is not enough.
 
 message:
 ;db 'Hello, World! MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM', 13, 10, 'MSG', 13, 10

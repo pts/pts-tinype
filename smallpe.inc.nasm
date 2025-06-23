@@ -688,7 +688,7 @@ kcall ExitProcess
   ; Make peheader start at an offset divisble by 4.
   _STUBX_end:
   section peheader
-  dd 0  ; !!! Why is this needed? Why can't it be omitted? A dw is not enough.
+  ;dd 0  ; Terminator not needed after the imported function names.
   _PEHEADER_end:
   section rodata
   _RODATA_before_padding:

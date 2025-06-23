@@ -1,5 +1,5 @@
 ;
-; hh6c.nasm: small (668 bytes) and ultraportable Win32 PE .exe
+; hh6c.nasm: small (713 bytes) and ultraportable Win32 PE .exe
 ; Compile: nasm -O0 -f bin -o hh6c.exe hh6c.nasm
 ;
 ; It works on Windows NT 3.1--Windows 10, tested on Windows NT 3.1, Windows
@@ -232,9 +232,6 @@ NAME_KERNEL32_DLL: db 'kernel32.dll', NAME_EVEN
 NAME_GetStdHandle: db 0, 0, 'GetStdHandle', NAME_EVEN
 NAME_WriteFile: db 0, 0, 'WriteFile', NAME_ODD
 NAME_ExitProcess: db 0, 0, 'ExitProcess', NAME_ODD
-dd 0  ; !!! Why is this needed? Why can't it be omitted? A dw is not enough.
-
-times ($$-$)&15 db 0
 
 SECTION_TEXT_end:
 times (($$-$) %% AFTER_LAST_SECTION_ALIGNMENT+AFTER_LAST_SECTION_ALIGNMENT)%AFTER_LAST_SECTION_ALIGNMENT db 0

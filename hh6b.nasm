@@ -232,7 +232,7 @@ IMPORT_ADDRESS_TABLE:  ; Import address table. Modified by the PE loader before 
 __imp__GetStdHandle@4: dd NAME_GetStdHandle+(VADDR_TEXT-SECTION_TEXT)
 __imp__WriteFile@20: dd NAME_WriteFile+(VADDR_TEXT-SECTION_TEXT)
 __imp__ExitProcess@4 dd NAME_ExitProcess+(VADDR_TEXT-SECTION_TEXT)
-dd 0  ; Terminator needed after the function pointers in IMPORT_ADDRESS_TABLE by Windows 95, Windows NT 3.1, Windows NT 4.0, Windows XP, WDOSX and possibly others. Wine 5.0 doesn't need it.
+dd 0  ; Terminator needed after the function pointers in IMPORT_ADDRESS_TABLE by Windows 95, Windows NT 3.1, Windows NT 4.0, Windows XP, WDOSX and possibly others. Wine 5.0 and ReactOS 0.4.14 don't need it.
 IMPORT_ADDRESS_TABLE_end:
 
 IMPORTED_SYMBOL_NAMES:
@@ -240,14 +240,13 @@ IMPORTED_SYMBOL_NAMES:
 dd NAME_GetStdHandle+(VADDR_TEXT-SECTION_TEXT)
 dd NAME_WriteFile+(VADDR_TEXT-SECTION_TEXT)
 dd NAME_ExitProcess+(VADDR_TEXT-SECTION_TEXT)
-dd 0  ; Marks end-of-list.
+dd 0  ; Terminator needed after thane names in IMPORTED_SYMBOL_NAMES by Reactos 0.4.14.
+
 NAME_KERNEL32_DLL: db 'kernel32.dll', 0
 ; The `0, 0, ' is the .Hint.
 NAME_GetStdHandle: db 0, 0, 'GetStdHandle', 0
 NAME_WriteFile: db 0, 0, 'WriteFile', 0
 NAME_ExitProcess: db 0, 0, 'ExitProcess', 0
-dd 0  ; Why is this needed? A dw is not enough.
-times ($$-$)&15 db 0
 
 SECTION_TEXT_end:
 times ($$-$)&511 db 0

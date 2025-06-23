@@ -265,8 +265,7 @@ NAME_GetStdHandle: db 0, 0, 'GetStdHandle', 0
 NAME_WriteFile: db 0, 0, 'WriteFile', 0
 NAME_ExitProcess: db 0, 0, 'ExitProcess', 0
 dd 0  ; Why is this needed? A dw is not enough.
-times ($$-$)&15 db 0
-aa $$+0x04a0+32
+aa $$+0x04a0+26
 SECTION_DATA_end:
 times ($$-$)&511 db 0
 SECTION_DATA_end_aligned:
