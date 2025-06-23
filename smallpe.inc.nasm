@@ -205,7 +205,7 @@ IMAGE_SECTION_HEADER__0:
 times ($$-$)&7 db 0
 .VirtualSize: dd __IMAGE_SIZE__-__RVA_TEXT__
 .VirtualAddress: dd __RVA_TEXT__
-.SizeOfRawData: dd __IMAGE_SIZE_UPTO_BSS__-__RVA_TEXT__  ; Byte size in file.
+.SizeOfRawData: dd __IMAGE_SIZE_UPTO_BSS__-__RVA_TEXT__  ; Byte size in file. Windows NT 3.1 fails if this is larger than the actual file.
 .PointerToRawData: dd __IMAGE_SIZE_UPTO_TEXT__&~0x1ff  ; File offset.
 .PointerToRelocations: dd 0
 .PointerToLineNumbers: dd 0

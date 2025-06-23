@@ -164,7 +164,7 @@ times ($$-$)&7 db 0
 .VirtualSize: dd SECTION_TEXT_end-HEADER_end_aligned+EXTRA_BSS_SIZE+BSS_SIZE
 VADDR_TEXT equ 0x1000
 .VirtualAddress: dd VADDR_TEXT
-.SizeOfRawData: dd SECTION_TEXT_end-HEADER_end_aligned+EXTRA_BSS_SIZE+BSS_SIZE
+.SizeOfRawData: dd SECTION_TEXT_end-HEADER_end_aligned  ; Byte size in file. Windows NT 3.1 fails if this is larger than the actual file.
 .PointerToRawData: dd HEADER_end_aligned
 .PointerToRelocations: dd 0
 .PointerToLineNumbers: dd 0
