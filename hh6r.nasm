@@ -177,11 +177,13 @@ IMAGE_SCN_MEM_WRITE equ 0x80000000
 .Characteristics: dd IMAGE_SCN_CNT_CODE|IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ|IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_MEM_WRITE
 IMAGE_SECTION_HEADER_end:
 
-NAME_KERNEL32_DLL: db 'kernel32.dll', 0
+%define NAME_ODD  0     ; Names with an odd  length must be terminated by 1 NUL,  to make the full name even size.
+%define NAME_EVEN 0, 0  ; Names with an even length must be terminated by 2 NULs, to make the full name even size.
+NAME_KERNEL32_DLL: db 'kernel32.dll', NAME_EVEN
 ; The `0, 0, ' is the .Hint.
-NAME_GetStdHandle: db 0, 0, 'GetStdHandle', 0
-NAME_WriteFile: db 0, 0, 'WriteFile', 0
-NAME_ExitProcess: db 0, 0, 'ExitProcess', 0
+NAME_GetStdHandle: db 0, 0, 'GetStdHandle', NAME_EVEN
+NAME_WriteFile: db 0, 0, 'WriteFile', NAME_ODD
+NAME_ExitProcess: db 0, 0, 'ExitProcess', NAME_ODD
 
 message:
 db 'Hello, World!', 13, 10

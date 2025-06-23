@@ -219,12 +219,15 @@ __imp__ExitProcess@4 dd NAME_ExitProcess+(VADDR_TEXT-SECTION_TEXT)
 dd 0  ; Marks end-of-list.
 IMPORT_ADDRESS_TABLE_end:
 
-NAME_KERNEL32_DLL: db 'kernel32.dll', 0
+%define NAME_ODD  0     ; Names with an odd  length must be terminated by 1 NUL,  to make the full name even size.
+%define NAME_EVEN 0, 0  ; Names with an even length must be terminated by 2 NULs, to make the full name even size.
+NAME_KERNEL32_DLL: db 'kernel32.dll', NAME_EVEN
 ; The `0, 0, ' is the .Hint.
-NAME_GetStdHandle: db 0, 0, 'GetStdHandle', 0
-NAME_WriteFile: db 0, 0, 'WriteFile', 0
-NAME_ExitProcess: db 0, 0, 'ExitProcess', 0
-dd 0  ; Why is this needed? A dw is not enough.
+NAME_GetStdHandle: db 0, 0, 'GetStdHandle', NAME_EVEN
+NAME_WriteFile: db 0, 0, 'WriteFile', NAME_ODD
+NAME_ExitProcess: db 0, 0, 'ExitProcess', NAME_ODD
+dd 0  ; !!! Why is this needed? Why can't it be omitted? A dw is not enough.
+
 times ($$-$)&15 db 0
 
 SECTION_TEXT_end:

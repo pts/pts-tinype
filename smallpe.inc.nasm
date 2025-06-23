@@ -219,7 +219,7 @@ IMAGE_SCN_MEM_WRITE equ 0x80000000
 .Characteristics: dd IMAGE_SCN_CNT_CODE|IMAGE_SCN_MEM_EXECUTE|IMAGE_SCN_MEM_READ|IMAGE_SCN_CNT_INITIALIZED_DATA|IMAGE_SCN_MEM_WRITE
 IMAGE_SECTION_HEADER_end:
 
-NAME_KERNEL32_DLL: db 'kernel32.dll', 0
+NAME_KERNEL32_DLL: db 'kernel32.dll', 0, 0  ; We add a double trailing NUL to enforce even name alignment, because the name has even length
 
 section import
 ; Windows 95 requires this to be part of a section; Windows NT 3.1 and
@@ -274,6 +274,9 @@ IMPORT_ADDRESS_TABLE:  ; Import address table. Modified by the PE loader before 
 __name__%1:
 .Hint: dw 0
 .Name: db %2, 0
+%if ($-.Name)&1  ; Add an extra 0 for names with an even length, to enforce even name alignment.
+  db 0
+%endif
 __SECT__  ; Back to the previous section when the macro was called.
 %endif
 call [%1]
@@ -682,7 +685,7 @@ kcall ExitProcess
   ; Make peheader start at an offset divisble by 4.
   _STUBX_end:
   section peheader
-  dd 0  ; Why is this needed? A dw is not enough.
+  dd 0  ; !!! Why is this needed? Why can't it be omitted? A dw is not enough.
   _PEHEADER_end:
   section rodata
   _RODATA_before_padding:
